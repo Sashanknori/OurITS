@@ -318,13 +318,11 @@ public class HomeSreen extends javax.swing.JFrame {
 
     private void buttonSubProjectEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSubProjectEntryActionPerformed
     InvokerHelper invokerHelper = new InvokerHelper();
-    invokerHelper.doInvoke(new SubProjectEntry());
-    }//GEN-LAST:event_buttonSubProjectEntryActionPerformed
+    invokerHelper.doInvoke(new SubProjectEntry());    }//GEN-LAST:event_buttonSubProjectEntryActionPerformed
 
     private void buttonTaskEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTaskEntryActionPerformed
     InvokerHelper invokerHelper = new InvokerHelper();
-    invokerHelper.doInvoke(new TaskEntry());
-    }//GEN-LAST:event_buttonTaskEntryActionPerformed
+    invokerHelper.doInvoke(new TaskEntry());    }//GEN-LAST:event_buttonTaskEntryActionPerformed
 
     private void buttonExpensesEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExpensesEntryActionPerformed
     InvokerHelper invokerHelper = new InvokerHelper();
