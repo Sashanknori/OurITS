@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="TASK_DENTIFIER")
+@Table(name="TASK_DENTIFIER", schema ="JOBCOSTING")
 @NamedQuery(name="TaskDentifier.findAll", query="SELECT t FROM TaskDentifier t")
 public class TaskDentifier implements Serializable {
 	private static final long serialVersionUID = 1L;

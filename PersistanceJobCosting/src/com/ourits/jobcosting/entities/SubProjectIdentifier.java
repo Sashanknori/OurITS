@@ -13,7 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="SUB_PROJECT_IDENTIFIER")
+@Table(name="SUB_PROJECT_IDENTIFIER", schema ="JOBCOSTING")
 @NamedQuery(name="SubProjectIdentifier.findAll", query="SELECT s FROM SubProjectIdentifier s")
 public class SubProjectIdentifier implements Serializable {
 	private static final long serialVersionUID = 1L;

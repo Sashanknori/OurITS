@@ -14,9 +14,12 @@
 		<class>com.ourits.jobcosting.entities.TaskDentifierPK</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:/home/sashank/MyDB;create=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:C:\Users\Sashank\MyDB;create=true" />
 			<property name="javax.persistence.jdbc.user" value="APP" />
 			<property name="javax.persistence.jdbc.password" value="user" />
+			<property name="eclipseLink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipseLink.ddl-generation.output-mode"
+				value="database" />
 		</properties>
 	</persistence-unit>
 </persistence>

@@ -12,7 +12,7 @@ public class Test {
 	public static void main(String[] args) {
 		ProjectIdentifier pi = new ProjectIdentifier();
 		ProjectIdentifierPK id = new ProjectIdentifierPK();
-		id.setProjectId("111111111");
+		id.setProjectId("111111112");
 		id.setProjectName("Ganadhideva");
 		pi.setId(id);
 		pi.setProjectAmountCurrency("USD");
@@ -20,10 +20,10 @@ public class Test {
 		pi.setProjectDesc("Jai dussera");
 		pi.setProjectEndDate(new Date(0));
 		pi.setProjectStrtDate(new Date(0));
-		
+
 		BasePersistenceHelpers bph = new BasePersistenceHelpers();
 		bph.createProjectIdentifier(pi);
-
+		System.out.println("Persisted");
 	}
 
 }

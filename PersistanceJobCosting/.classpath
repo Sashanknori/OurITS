@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="lib/javaee-api-7.0.jar"/>
 	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.persistence.jpa-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/eclipselink-2.5.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -12,8 +12,9 @@ import java.util.List;
  * The persistent class for the PROJECT_IDENTIFIER database table.
  * 
  */
+
 @Entity
-@Table(name="PROJECT_IDENTIFIER")
+@Table(name="PROJECT_IDENTIFIER", schema ="JOBCOSTING")
 @NamedQuery(name="ProjectIdentifier.findAll", query="SELECT p FROM ProjectIdentifier p")
 public class ProjectIdentifier implements Serializable {
 	private static final long serialVersionUID = 1L;
