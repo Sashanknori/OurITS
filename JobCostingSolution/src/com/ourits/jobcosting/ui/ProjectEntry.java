@@ -7,21 +7,30 @@ package com.ourits.jobcosting.ui;
 
 import java.awt.Color;
 import java.awt.SystemColor;
-import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTabbedPane;
+import javax.swing.border.MatteBorder;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.ourits.jobcosting.entities.ProjectIdentifier;
 import com.ourits.jobcosting.entities.ProjectIdentifierPK;
 import com.ourits.jobcosting.persistencehelpers.BasePersistenceHelpers;
-
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.sql.Date;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.JTabbedPane;
-import javax.swing.border.MatteBorder;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  *
@@ -138,33 +147,86 @@ public class ProjectEntry extends javax.swing.JFrame {
 				dropdownCurrency.setSelectedIndex(0);
 			}
 		});
-		jPanel2 = new javax.swing.JPanel();
-		jLabel13 = new javax.swing.JLabel();
-		jLabel14 = new javax.swing.JLabel();
+		panelUpdateEntry = new javax.swing.JPanel();
+		lebelUpdateProjName = new javax.swing.JLabel();
+		labelUpdateProjectId = new javax.swing.JLabel();
 		jLabel15 = new javax.swing.JLabel();
-		jScrollPane2 = new javax.swing.JScrollPane();
-		jTextArea2 = new javax.swing.JTextArea();
+		DescriptionPane = new javax.swing.JScrollPane();
+		textAreaDescription = new javax.swing.JTextArea();
 		jLabel16 = new javax.swing.JLabel();
-		jDateChooser5 = new com.toedter.calendar.JDateChooser();
+		initialStartDate = new com.toedter.calendar.JDateChooser();
+		initialStartDate.getCalendarButton().setEnabled(false);
 		jLabel17 = new javax.swing.JLabel();
-		jDateChooser6 = new com.toedter.calendar.JDateChooser();
+		initialEndDate = new com.toedter.calendar.JDateChooser();
+		initialEndDate.getCalendarButton().setEnabled(false);
 		jLabel18 = new javax.swing.JLabel();
-		jTextField7 = new javax.swing.JTextField();
-		jComboBox3 = new javax.swing.JComboBox<>();
+		initialBudgetAmount = new javax.swing.JTextField();
+		initialBudgetAmount.setEditable(false);
+		initialCurrency = new javax.swing.JComboBox<>();
+		initialCurrency.setEnabled(false);
 		jLabel19 = new javax.swing.JLabel();
-		jDateChooser7 = new com.toedter.calendar.JDateChooser();
+		revisedStartDate = new com.toedter.calendar.JDateChooser();
 		jLabel20 = new javax.swing.JLabel();
-		jDateChooser8 = new com.toedter.calendar.JDateChooser();
+		revisedEndDate = new com.toedter.calendar.JDateChooser();
 		jLabel21 = new javax.swing.JLabel();
-		jTextField8 = new javax.swing.JTextField();
-		jComboBox4 = new javax.swing.JComboBox<>();
+		revisedBudgetAmount = new javax.swing.JTextField();
+		revisedCurrency = new javax.swing.JComboBox<>();
 		jButton4 = new javax.swing.JButton();
 		jButton5 = new javax.swing.JButton();
 		jButton6 = new javax.swing.JButton();
-		jComboBox5 = new javax.swing.JComboBox<>();
-		jComboBox6 = new javax.swing.JComboBox<>();
-		jButton7 = new javax.swing.JButton();
-		jButton8 = new javax.swing.JButton();
+		dropdownProjectName = new javax.swing.JComboBox<>();
+		dropdownProjectName.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				List<String> itemsList = retrieveProjectNames();
+				dropdownProjectName.removeAllItems();
+				for (String item : itemsList) {
+					dropdownProjectName.addItem(item);
+				}
+			}
+
+			private List<String> retrieveProjectNames() {
+				final BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<String> projectNamesList = new ArrayList<>();
+				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
+						.retrieveProjectIdentifiers(null);
+				if (CollectionUtils.isNotEmpty(projectIndentifiersList)) {
+					for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
+						projectNamesList.add(projectIdentifier.getId().getProjectName());
+					}
+
+				}
+				return projectNamesList;
+			}
+		});
+
+		dropdownProjectName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				List<String> itemsList = retrieveProjectNames();
+				for (String item : itemsList) {
+					dropdownProjectName.addItem(item);
+				}
+			}
+
+			private List<String> retrieveProjectNames() {
+				final BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<String> projectNamesList = new ArrayList<>();
+				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
+						.retrieveProjectIdentifiers(null);
+				if (CollectionUtils.isNotEmpty(projectIndentifiersList)) {
+					for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
+						projectNamesList.add(projectIdentifier.getId().getProjectName());
+					}
+
+				}
+				return projectNamesList;
+			}
+		});
+
+		dropdownProjectCode = new javax.swing.JComboBox<>();
+		buttonSearchProjectCode = new javax.swing.JButton();
+		buttonSearcProjectName = new javax.swing.JButton();
 		jSeparator2 = new javax.swing.JSeparator();
 		jPanel3 = new javax.swing.JPanel();
 		jPanel4 = new javax.swing.JPanel();
@@ -196,8 +258,7 @@ public class ProjectEntry extends javax.swing.JFrame {
 		jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 		jLabel1.setText("Project Entry Details ");
 
-		projectEntry.setBorder(
-				new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		projectEntry.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 
 		panelNewEntry.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -374,15 +435,15 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		projectEntry.addTab("New Entry", panelNewEntry);
 
-		jLabel13.setText("Project Name ");
+		lebelUpdateProjName.setText("Project Name ");
 
-		jLabel14.setText("Project Code ");
+		labelUpdateProjectId.setText("Project Code ");
 
 		jLabel15.setText("Description");
 
-		jTextArea2.setColumns(20);
-		jTextArea2.setRows(5);
-		jScrollPane2.setViewportView(jTextArea2);
+		textAreaDescription.setColumns(20);
+		textAreaDescription.setRows(5);
+		DescriptionPane.setViewportView(textAreaDescription);
 
 		jLabel16.setText("Start Date");
 
@@ -390,7 +451,8 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		jLabel18.setText("Budget Amount");
 
-		jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
+		initialCurrency
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
 
 		jLabel19.setText("Revised Start Date");
 
@@ -398,7 +460,8 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		jLabel21.setText("Revised Budget Amount");
 
-		jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
+		revisedCurrency
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
 
 		jButton4.setText("Update Entry");
 
@@ -406,175 +469,232 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		jButton6.setText("Cancel");
 
-		jComboBox5.setModel(
+		dropdownProjectName.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		jComboBox6.setModel(
+		dropdownProjectCode.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		jButton7.setText("jButton7");
+		buttonSearchProjectCode.setText("jButton7");
 
-		jButton8.setText("jButton7");
+		buttonSearcProjectName.setText("jButton7");
 
-		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-		jPanel2.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup()
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(jLabel14).addComponent(jLabel13))
-								.addGap(27, 27, 27)
-								.addGroup(jPanel2Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jComboBox6, 0, 209, Short.MAX_VALUE).addComponent(jComboBox5, 0,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(jPanel2Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE,
-												41, Short.MAX_VALUE)
-										.addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-												Short.MAX_VALUE))
-								.addGap(0, 0, Short.MAX_VALUE))
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-								jPanel2Layout.createSequentialGroup().addComponent(jLabel15)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46,
-												Short.MAX_VALUE)
-										.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263,
-												javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap())
-				.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel2Layout.createSequentialGroup()
-										.addGroup(jPanel2Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel16).addComponent(jLabel17).addComponent(jLabel18))
-										.addGap(18, 18, 18)
-										.addGroup(jPanel2Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addComponent(jDateChooser6, javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-														jPanel2Layout.createSequentialGroup().addComponent(jTextField7)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(jComboBox3,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 82,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addComponent(jDateChooser5, javax.swing.GroupLayout.DEFAULT_SIZE, 263,
-														Short.MAX_VALUE)))
-								.addGroup(jPanel2Layout
-										.createSequentialGroup().addGroup(jPanel2Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel19).addComponent(jLabel20).addComponent(jLabel21))
-										.addGap(18, 18, 18)
-										.addGroup(jPanel2Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-														jPanel2Layout.createSequentialGroup()
-																.addComponent(jTextField8,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 129,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(jComboBox4,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 79,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addComponent(jDateChooser8, javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(jDateChooser7, javax.swing.GroupLayout.Alignment.TRAILING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										jPanel2Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-												.addComponent(jButton4)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton5).addGap(10, 10, 10).addComponent(jButton6)))
-								.addContainerGap()))
-				.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(jSeparator2)
-								.addContainerGap())));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jButton7)
-						.addGroup(jPanel2Layout.createSequentialGroup().addGroup(jPanel2Layout
+		javax.swing.GroupLayout gl_panelUpdateEntry = new javax.swing.GroupLayout(panelUpdateEntry);
+		panelUpdateEntry.setLayout(gl_panelUpdateEntry);
+		gl_panelUpdateEntry
+				.setHorizontalGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(gl_panelUpdateEntry
+								.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+												gl_panelUpdateEntry.createSequentialGroup().addGroup(gl_panelUpdateEntry
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(labelUpdateProjectId)
+														.addComponent(lebelUpdateProjName))
+														.addGap(27, 27, 27)
+														.addGroup(gl_panelUpdateEntry
+																.createParallelGroup(
+																		javax.swing.GroupLayout.Alignment.LEADING,
+																		false)
+																.addComponent(dropdownProjectCode, 0,
+																		209, Short.MAX_VALUE)
+																.addComponent(dropdownProjectName, 0,
+																		javax.swing.GroupLayout.DEFAULT_SIZE,
+																		Short.MAX_VALUE))
+														.addPreferredGap(
+																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+														.addGroup(gl_panelUpdateEntry
+																.createParallelGroup(
+																		javax.swing.GroupLayout.Alignment.LEADING,
+																		false)
+																.addComponent(buttonSearcProjectName,
+																		javax.swing.GroupLayout.PREFERRED_SIZE, 41,
+																		Short.MAX_VALUE)
+																.addComponent(buttonSearchProjectCode,
+																		javax.swing.GroupLayout.PREFERRED_SIZE, 0,
+																		Short.MAX_VALUE))
+														.addGap(0, 0, Short.MAX_VALUE))
+										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gl_panelUpdateEntry
+												.createSequentialGroup().addComponent(jLabel15)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46,
+														Short.MAX_VALUE)
+												.addComponent(DescriptionPane, javax.swing.GroupLayout.PREFERRED_SIZE,
+														263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+								.addContainerGap())
+						.addGroup(
+								gl_panelUpdateEntry.createParallelGroup(
+										javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(gl_panelUpdateEntry
+												.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.LEADING)
+														.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+																.addGroup(gl_panelUpdateEntry
+																		.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING)
+																		.addComponent(jLabel16).addComponent(jLabel17)
+																		.addComponent(jLabel18))
+																.addGap(18, 18, 18)
+																.addGroup(gl_panelUpdateEntry
+																		.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																		.addComponent(initialEndDate,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addGroup(
+																				javax.swing.GroupLayout.Alignment.TRAILING,
+																				gl_panelUpdateEntry
+																						.createSequentialGroup()
+																						.addComponent(
+																								initialBudgetAmount)
+																						.addPreferredGap(
+																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																						.addComponent(initialCurrency,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								82,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																		.addComponent(initialStartDate,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				263, Short.MAX_VALUE)))
+														.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+																.addGroup(
+																		gl_panelUpdateEntry
+																				.createParallelGroup(
+																						javax.swing.GroupLayout.Alignment.LEADING)
+																				.addComponent(jLabel19).addComponent(
+																						jLabel20)
+																				.addComponent(jLabel21))
+																.addGap(18, 18, 18)
+																.addGroup(gl_panelUpdateEntry
+																		.createParallelGroup(
+																				javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																		.addGroup(
+																				javax.swing.GroupLayout.Alignment.TRAILING,
+																				gl_panelUpdateEntry
+																						.createSequentialGroup()
+																						.addComponent(
+																								revisedBudgetAmount,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								129,
+																								javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(
+																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																						.addComponent(revisedCurrency,
+																								javax.swing.GroupLayout.PREFERRED_SIZE,
+																								79,
+																								javax.swing.GroupLayout.PREFERRED_SIZE))
+																		.addComponent(revisedEndDate,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)
+																		.addComponent(revisedStartDate,
+																				javax.swing.GroupLayout.Alignment.TRAILING,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE)))
+														.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+																gl_panelUpdateEntry.createSequentialGroup()
+																		.addGap(0, 0, Short.MAX_VALUE)
+																		.addComponent(jButton4)
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(jButton5).addGap(10, 10, 10)
+																		.addComponent(jButton6)))
+												.addContainerGap()))
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap()
+										.addComponent(jSeparator2).addContainerGap())));
+		gl_panelUpdateEntry.setVerticalGroup(gl_panelUpdateEntry
+				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
+						.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+						.addComponent(buttonSearchProjectCode)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGroup(gl_panelUpdateEntry
 								.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(dropdownProjectName, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton8).addComponent(jLabel13))
+								.addComponent(buttonSearcProjectName).addComponent(lebelUpdateProjName))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(dropdownProjectCode, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel14))))
+										.addComponent(labelUpdateProjectId))))
 						.addGap(18, 18, 18)
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(DescriptionPane, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(jLabel15))
 						.addContainerGap(354, Short.MAX_VALUE))
-				.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup().addGap(187, 187, 187)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser5, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel16))
+				.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+						gl_panelUpdateEntry.createSequentialGroup().addGap(187, 187, 187).addGroup(gl_panelUpdateEntry
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+								.addComponent(initialStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel16))
 								.addGap(18, 18, 18)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser6, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addComponent(initialEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addComponent(jLabel17))
 								.addGap(18, 18, 18)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(jPanel2Layout
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addGroup(gl_panelUpdateEntry
 												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE,
+												.addComponent(initialBudgetAmount,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE,
+												.addComponent(initialCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE))
 										.addComponent(jLabel18))
 								.addGap(52, 52, 52)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser7, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addComponent(revisedStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addComponent(jLabel19))
 								.addGap(18, 18, 18)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser8, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addComponent(revisedEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addComponent(jLabel20))
 								.addGap(18, 18, 18)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(jPanel2Layout
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addGroup(gl_panelUpdateEntry
 												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE,
+												.addComponent(revisedBudgetAmount,
+														javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE,
+												.addComponent(revisedCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
 														javax.swing.GroupLayout.DEFAULT_SIZE,
 														javax.swing.GroupLayout.PREFERRED_SIZE))
 										.addComponent(jLabel21))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47,
 										Short.MAX_VALUE)
-								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addGroup(gl_panelUpdateEntry
+										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 										.addComponent(jButton4).addComponent(jButton6).addComponent(jButton5))
 								.addGap(10, 10, 10)))
-				.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel2Layout.createSequentialGroup().addGap(323, 323, 323)
+				.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(323, 323, 323)
 								.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addContainerGap(200, Short.MAX_VALUE))));
 
-		projectEntry.addTab("Update Entry", jPanel2);
+		projectEntry.addTab("Update Entry", panelUpdateEntry);
 
 		jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -725,18 +845,12 @@ public class ProjectEntry extends javax.swing.JFrame {
 								.addGap(10, 10, 10))));
 
 		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-		jPanel3Layout.setHorizontalGroup(
-			jPanel3Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel3Layout.createSequentialGroup()
-					.addGap(0, 0, Short.MAX_VALUE)
-					.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE))
-		);
-		jPanel3Layout.setVerticalGroup(
-			jPanel3Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel3Layout.createSequentialGroup()
-					.addGap(0, 0, Short.MAX_VALUE)
-					.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-		);
+		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(jPanel4,
+						GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)));
+		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(jPanel4,
+						GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
 		jPanel3.setLayout(jPanel3Layout);
 
 		projectEntry.addTab("Close Entry", jPanel3);
@@ -855,34 +969,34 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JButton jButton4;
 	private javax.swing.JButton jButton5;
 	private javax.swing.JButton jButton6;
-	private javax.swing.JButton jButton7;
-	private javax.swing.JButton jButton8;
+	private javax.swing.JButton buttonSearchProjectCode;
+	private javax.swing.JButton buttonSearcProjectName;
 	private com.toedter.calendar.JCalendar jCalendar1;
 	private javax.swing.JComboBox<String> dropdownCurrency;
 	private javax.swing.JComboBox<String> jComboBox13;
 	private javax.swing.JComboBox<String> jComboBox14;
 	private javax.swing.JComboBox<String> dropdownRevisedCurrency;
-	private javax.swing.JComboBox<String> jComboBox3;
-	private javax.swing.JComboBox<String> jComboBox4;
-	private javax.swing.JComboBox<String> jComboBox5;
-	private javax.swing.JComboBox<String> jComboBox6;
+	private javax.swing.JComboBox<String> initialCurrency;
+	private javax.swing.JComboBox<String> revisedCurrency;
+	private javax.swing.JComboBox<String> dropdownProjectName;
+	private javax.swing.JComboBox<String> dropdownProjectCode;
 	private javax.swing.JComboBox<String> jComboBox9;
 	private com.toedter.calendar.JDateChooser dateChooserStartDate;
 	private com.toedter.calendar.JDateChooser jDateChooser10;
 	private com.toedter.calendar.JDateChooser dateChooserEndDate;
 	private com.toedter.calendar.JDateChooser dateChooserRevisedStartDate;
 	private com.toedter.calendar.JDateChooser datechooserRevisedEndDate;
-	private com.toedter.calendar.JDateChooser jDateChooser5;
-	private com.toedter.calendar.JDateChooser jDateChooser6;
-	private com.toedter.calendar.JDateChooser jDateChooser7;
-	private com.toedter.calendar.JDateChooser jDateChooser8;
+	private com.toedter.calendar.JDateChooser initialStartDate;
+	private com.toedter.calendar.JDateChooser initialEndDate;
+	private com.toedter.calendar.JDateChooser revisedStartDate;
+	private com.toedter.calendar.JDateChooser revisedEndDate;
 	private com.toedter.calendar.JDateChooser jDateChooser9;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel labelCompanyCopyrights;
 	private javax.swing.JLabel labelRevisedEndDate;
 	private javax.swing.JLabel labelRevisedBudgetAmount;
-	private javax.swing.JLabel jLabel13;
-	private javax.swing.JLabel jLabel14;
+	private javax.swing.JLabel lebelUpdateProjName;
+	private javax.swing.JLabel labelUpdateProjectId;
 	private javax.swing.JLabel jLabel15;
 	private javax.swing.JLabel jLabel16;
 	private javax.swing.JLabel jLabel17;
@@ -905,30 +1019,35 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel labelProjectName;
 	private javax.swing.JLabel labelRevisedStartDate;
 	private javax.swing.JPanel panelNewEntry;
-	private javax.swing.JPanel jPanel2;
+	private javax.swing.JPanel panelUpdateEntry;
 	private javax.swing.JPanel jPanel3;
 	private javax.swing.JPanel jPanel4;
 	private javax.swing.JScrollPane projectDescArea;
-	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JScrollPane DescriptionPane;
 	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JTabbedPane jTabbedPane5;
 	private javax.swing.JTextArea textAreaProjectDescription;
-	private javax.swing.JTextArea jTextArea2;
+	private javax.swing.JTextArea textAreaDescription;
 	private javax.swing.JTextArea jTextArea3;
 	private javax.swing.JTextField textFieldProjectCode;
 	private javax.swing.JTextField textFieldBudgetAmount;
 	private javax.swing.JTextField textFieldProjectName;
 	private javax.swing.JTextField textFieldRevisedBudgetAmt;
-	private javax.swing.JTextField jTextField7;
-	private javax.swing.JTextField jTextField8;
+	private javax.swing.JTextField initialBudgetAmount;
+	private javax.swing.JTextField revisedBudgetAmount;
 	private javax.swing.JTextField jTextField9;
 	private javax.swing.JTabbedPane projectEntry;
 	private final Action action = new SwingAction();
 
 	// End of variables declaration//GEN-END:variables
 	private class SwingAction extends AbstractAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public SwingAction() {
 			putValue(NAME, "SwingAction");
 			putValue(SHORT_DESCRIPTION, "Some short description");
