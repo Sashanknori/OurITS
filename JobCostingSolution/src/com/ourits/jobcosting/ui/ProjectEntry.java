@@ -9,28 +9,29 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.MatteBorder;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import com.ourits.jobcosting.entities.ProjectIdentifier;
 import com.ourits.jobcosting.entities.ProjectIdentifierPK;
 import com.ourits.jobcosting.persistencehelpers.BasePersistenceHelpers;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -148,6 +149,22 @@ public class ProjectEntry extends javax.swing.JFrame {
 			}
 		});
 		panelUpdateEntry = new javax.swing.JPanel();
+		panelUpdateEntry.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
+						.retrieveProjectIdentifiers(null);
+				dropdownProjectCode.removeAllItems();
+				dropdownProjectName.removeAllItems();
+				for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
+					dropdownProjectCode.addItem(projectIdentifier.getId().getProjectId());
+					dropdownProjectName.addItem(projectIdentifier.getId().getProjectName());
+				}
+
+			}
+		});
+
 		lebelUpdateProjName = new javax.swing.JLabel();
 		labelUpdateProjectId = new javax.swing.JLabel();
 		jLabel15 = new javax.swing.JLabel();
@@ -172,83 +189,24 @@ public class ProjectEntry extends javax.swing.JFrame {
 		revisedBudgetAmount = new javax.swing.JTextField();
 		revisedCurrency = new javax.swing.JComboBox<>();
 		jButton4 = new javax.swing.JButton();
+		jButton4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				projectIdentifierRetrievedForUpdate
+						.setProjectRevisedAmountCurrency(revisedCurrency.getSelectedItem().toString());
+				projectIdentifierRetrievedForUpdate
+						.setProjectRevisedBudgetAmt(new BigDecimal(revisedBudgetAmount.getText()));
+				projectIdentifierRetrievedForUpdate.setProjectRevisedStrtDate(revisedStartDate.getDate());
+				projectIdentifierRetrievedForUpdate.setProjectRevisedEndDate(revisedEndDate.getDate());
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				basePersistenceHelpers.updateProjectIdentifier(projectIdentifierRetrievedForUpdate);
+			}
+		});
 		jButton5 = new javax.swing.JButton();
 		jButton6 = new javax.swing.JButton();
 		dropdownProjectName = new javax.swing.JComboBox<>();
-		dropdownProjectName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				List<String> itemsList = retrieveProjectNames();
-				dropdownProjectName.removeAllItems();
-				for (String item : itemsList) {
-					dropdownProjectName.addItem(item);
-				}
-			}
-
-			private List<String> retrieveProjectNames() {
-				final BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
-				List<String> projectNamesList = new ArrayList<>();
-				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
-						.retrieveProjectIdentifiers(null);
-				if (CollectionUtils.isNotEmpty(projectIndentifiersList)) {
-					for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
-						projectNamesList.add(projectIdentifier.getId().getProjectName());
-					}
-
-				}
-				return projectNamesList;
-			}
-		});
-
-		dropdownProjectName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				List<String> itemsList = retrieveProjectNames();
-				for (String item : itemsList) {
-					dropdownProjectName.addItem(item);
-				}
-			}
-
-			private List<String> retrieveProjectNames() {
-				final BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
-				List<String> projectNamesList = new ArrayList<>();
-				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
-						.retrieveProjectIdentifiers(null);
-				if (CollectionUtils.isNotEmpty(projectIndentifiersList)) {
-					for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
-						projectNamesList.add(projectIdentifier.getId().getProjectName());
-					}
-
-				}
-				return projectNamesList;
-			}
-		});
-
 		dropdownProjectCode = new javax.swing.JComboBox<>();
-		buttonSearchProjectCode = new javax.swing.JButton();
-		buttonSearcProjectName = new javax.swing.JButton();
 		jSeparator2 = new javax.swing.JSeparator();
-		jPanel3 = new javax.swing.JPanel();
-		jPanel4 = new javax.swing.JPanel();
-		jLabel25 = new javax.swing.JLabel();
-		jLabel26 = new javax.swing.JLabel();
-		jScrollPane3 = new javax.swing.JScrollPane();
-		jTextArea3 = new javax.swing.JTextArea();
-		jLabel27 = new javax.swing.JLabel();
-		jDateChooser9 = new com.toedter.calendar.JDateChooser();
-		jLabel28 = new javax.swing.JLabel();
-		jDateChooser10 = new com.toedter.calendar.JDateChooser();
-		jLabel29 = new javax.swing.JLabel();
-		jTextField9 = new javax.swing.JTextField();
-		jComboBox9 = new javax.swing.JComboBox<>();
-		jButton11 = new javax.swing.JButton();
-		jButton12 = new javax.swing.JButton();
-		jButton13 = new javax.swing.JButton();
-		jButton15 = new javax.swing.JButton();
-		jComboBox13 = new javax.swing.JComboBox<>();
-		jLabel30 = new javax.swing.JLabel();
-		jComboBox14 = new javax.swing.JComboBox<>();
-		jButton16 = new javax.swing.JButton();
+		panelCloseEntry = new javax.swing.JPanel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setBackground(new java.awt.Color(255, 255, 255));
@@ -309,129 +267,134 @@ public class ProjectEntry extends javax.swing.JFrame {
 		buttonReset.setText("Reset");
 
 		javax.swing.GroupLayout gl_panelNewEntry = new javax.swing.GroupLayout(panelNewEntry);
-		panelNewEntry.setLayout(gl_panelNewEntry);
-		gl_panelNewEntry.setHorizontalGroup(gl_panelNewEntry
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(gl_panelNewEntry.createSequentialGroup().addContainerGap().addGroup(gl_panelNewEntry
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSeparator1)
-						.addGroup(gl_panelNewEntry.createSequentialGroup()
-								.addGroup(
-										gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(labelProjectCode).addComponent(labelProjectDesc)
-												.addComponent(labelStartDate).addComponent(labelEndDate)
-												.addComponent(labelBudgetAmt).addComponent(labelProjectName))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelNewEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(textFieldProjectCode)
-										.addComponent(projectDescArea, javax.swing.GroupLayout.DEFAULT_SIZE, 263,
-												Short.MAX_VALUE)
-										.addComponent(dateChooserStartDate, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(dateChooserEndDate, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gl_panelNewEntry
-												.createSequentialGroup().addComponent(textFieldBudgetAmount)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(dropdownCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
-														82, javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(textFieldProjectName)))
-						.addGroup(gl_panelNewEntry.createSequentialGroup()
-								.addGroup(
-										gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(labelRevisedStartDate)
-												.addComponent(labelRevisedEndDate)
+		gl_panelNewEntry.setHorizontalGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelNewEntry
+						.createSequentialGroup().addContainerGap().addGroup(gl_panelNewEntry
+								.createParallelGroup(Alignment.TRAILING)
+								.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panelNewEntry.createSequentialGroup().addGroup(gl_panelNewEntry
+										.createParallelGroup(Alignment.LEADING).addComponent(labelProjectCode)
+										.addComponent(labelProjectDesc)
+										.addComponent(labelStartDate)
+										.addComponent(labelEndDate).addComponent(labelBudgetAmt)
+										.addComponent(labelProjectName)).addGap(18).addGroup(
+												gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
+														.addComponent(textFieldProjectCode)
+														.addComponent(projectDescArea, GroupLayout.DEFAULT_SIZE, 263,
+																Short.MAX_VALUE)
+														.addComponent(dateChooserStartDate, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addComponent(dateChooserEndDate, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+														.addGroup(gl_panelNewEntry.createSequentialGroup()
+																.addComponent(textFieldBudgetAmount).addPreferredGap(
+																		ComponentPlacement.RELATED)
+																.addComponent(dropdownCurrency,
+																		GroupLayout.PREFERRED_SIZE, 82,
+																		GroupLayout.PREFERRED_SIZE))
+														.addComponent(textFieldProjectName)))
+								.addGroup(gl_panelNewEntry.createSequentialGroup()
+										.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+												.addComponent(labelRevisedStartDate).addComponent(labelRevisedEndDate)
 												.addComponent(labelRevisedBudgetAmount))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelNewEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gl_panelNewEntry
-												.createSequentialGroup()
-												.addComponent(textFieldRevisedBudgetAmt,
-														javax.swing.GroupLayout.PREFERRED_SIZE, 129,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(dropdownRevisedCurrency,
-														javax.swing.GroupLayout.PREFERRED_SIZE, 79,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(datechooserRevisedEndDate, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(dateChooserRevisedStartDate,
-												javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-								gl_panelNewEntry.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-										.addComponent(buttonAddEntry)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(buttonReset).addGap(10, 10, 10).addComponent(buttonCancel)))
-						.addContainerGap()));
-		gl_panelNewEntry.setVerticalGroup(gl_panelNewEntry
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(gl_panelNewEntry.createSequentialGroup().addGap(7, 7, 7)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(labelProjectName).addComponent(textFieldProjectName,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(labelProjectCode).addComponent(textFieldProjectCode,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(labelProjectDesc).addComponent(projectDescArea,
-										javax.swing.GroupLayout.PREFERRED_SIZE, 80,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(26, 26, 26)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(dateChooserStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelStartDate))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(dateChooserEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelEndDate))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addGroup(gl_panelNewEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(textFieldBudgetAmount, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(dropdownCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(labelBudgetAmt))
-						.addGap(18, 18, 18)
-						.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(32, 32, 32)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(dateChooserRevisedStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelRevisedStartDate))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(datechooserRevisedEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(labelRevisedEndDate))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addGroup(gl_panelNewEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(textFieldRevisedBudgetAmt, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(dropdownRevisedCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(labelRevisedBudgetAmount))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-						.addGroup(gl_panelNewEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(buttonAddEntry).addComponent(buttonCancel).addComponent(buttonReset))
-						.addContainerGap()));
+										.addGap(18)
+										.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
+												.addGroup(gl_panelNewEntry.createSequentialGroup()
+														.addComponent(textFieldRevisedBudgetAmt,
+																GroupLayout.PREFERRED_SIZE, 129,
+																GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED).addComponent(
+																dropdownRevisedCurrency, GroupLayout.PREFERRED_SIZE, 79,
+																GroupLayout.PREFERRED_SIZE))
+												.addComponent(datechooserRevisedEndDate, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(dateChooserRevisedStartDate, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+						.addContainerGap())
+				.addGroup(Alignment.TRAILING,
+						gl_panelNewEntry.createSequentialGroup().addContainerGap(140, Short.MAX_VALUE)
+								.addComponent(buttonAddEntry).addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(buttonReset).addGap(10).addComponent(buttonCancel).addContainerGap()));
+		gl_panelNewEntry
+				.setVerticalGroup(
+						gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+								.addGroup(
+										gl_panelNewEntry.createSequentialGroup().addGap(7)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+														.addComponent(labelProjectName)
+														.addComponent(textFieldProjectName, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addGap(18)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+														.addComponent(labelProjectCode).addComponent(
+																textFieldProjectCode, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addGap(18)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+														.addComponent(labelProjectDesc).addComponent(projectDescArea,
+																GroupLayout.PREFERRED_SIZE, 80,
+																GroupLayout.PREFERRED_SIZE))
+												.addGap(26)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+														.addComponent(dateChooserStartDate, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addComponent(labelStartDate))
+												.addGap(18)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+														.addComponent(dateChooserEndDate,
+																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(labelEndDate))
+												.addGap(18)
+												.addGroup(
+														gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+																.addGroup(gl_panelNewEntry
+																		.createParallelGroup(Alignment.BASELINE)
+																		.addComponent(textFieldBudgetAmount,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addComponent(dropdownCurrency,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE))
+																.addComponent(labelBudgetAmt))
+												.addGap(18)
+												.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addGap(32)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+														.addComponent(dateChooserRevisedStartDate,
+																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(labelRevisedStartDate))
+												.addGap(18)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+														.addComponent(datechooserRevisedEndDate,
+																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(labelRevisedEndDate))
+												.addGap(18)
+												.addGroup(
+														gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+																.addGroup(gl_panelNewEntry
+																		.createParallelGroup(Alignment.BASELINE)
+																		.addComponent(textFieldRevisedBudgetAmt,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE)
+																		.addComponent(dropdownRevisedCurrency,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE))
+																.addComponent(labelRevisedBudgetAmount))
+												.addGap(43)
+												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+														.addComponent(buttonAddEntry).addComponent(buttonCancel)
+														.addComponent(buttonReset))
+												.addContainerGap(109, Short.MAX_VALUE)));
+		panelNewEntry.setLayout(gl_panelNewEntry);
 
 		projectEntry.addTab("New Entry", panelNewEntry);
 
@@ -475,422 +438,413 @@ public class ProjectEntry extends javax.swing.JFrame {
 		dropdownProjectCode.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		buttonSearchProjectCode.setText("jButton7");
+		button = new JButton("...");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dropdownProjectName.setEnabled(false);
+				dropdownProjectCode.setEnabled(false);
+				final String projectNameSelected = (String) dropdownProjectName.getSelectedItem();
+				final String projectCodeSelected = (String) dropdownProjectCode.getSelectedItem();
 
-		buttonSearcProjectName.setText("jButton7");
+				populateProjectDetails(projectNameSelected, projectCodeSelected);
 
-		javax.swing.GroupLayout gl_panelUpdateEntry = new javax.swing.GroupLayout(panelUpdateEntry);
-		panelUpdateEntry.setLayout(gl_panelUpdateEntry);
-		gl_panelUpdateEntry
-				.setHorizontalGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(gl_panelUpdateEntry
-								.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-												gl_panelUpdateEntry.createSequentialGroup().addGroup(gl_panelUpdateEntry
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(labelUpdateProjectId)
-														.addComponent(lebelUpdateProjName))
-														.addGap(27, 27, 27)
-														.addGroup(gl_panelUpdateEntry
-																.createParallelGroup(
-																		javax.swing.GroupLayout.Alignment.LEADING,
-																		false)
-																.addComponent(dropdownProjectCode, 0,
-																		209, Short.MAX_VALUE)
-																.addComponent(dropdownProjectName, 0,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		Short.MAX_VALUE))
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(gl_panelUpdateEntry
-																.createParallelGroup(
-																		javax.swing.GroupLayout.Alignment.LEADING,
-																		false)
-																.addComponent(buttonSearcProjectName,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 41,
-																		Short.MAX_VALUE)
-																.addComponent(buttonSearchProjectCode,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-																		Short.MAX_VALUE))
-														.addGap(0, 0, Short.MAX_VALUE))
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gl_panelUpdateEntry
-												.createSequentialGroup().addComponent(jLabel15)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46,
-														Short.MAX_VALUE)
-												.addComponent(DescriptionPane, javax.swing.GroupLayout.PREFERRED_SIZE,
-														263, javax.swing.GroupLayout.PREFERRED_SIZE)))
-								.addContainerGap())
-						.addGroup(
-								gl_panelUpdateEntry.createParallelGroup(
-										javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(gl_panelUpdateEntry
-												.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(gl_panelUpdateEntry.createSequentialGroup()
-																.addGroup(gl_panelUpdateEntry
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jLabel16).addComponent(jLabel17)
-																		.addComponent(jLabel18))
-																.addGap(18, 18, 18)
-																.addGroup(gl_panelUpdateEntry
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																		.addComponent(initialEndDate,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)
-																		.addGroup(
-																				javax.swing.GroupLayout.Alignment.TRAILING,
-																				gl_panelUpdateEntry
-																						.createSequentialGroup()
-																						.addComponent(
-																								initialBudgetAmount)
-																						.addPreferredGap(
-																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																						.addComponent(initialCurrency,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								82,
-																								javax.swing.GroupLayout.PREFERRED_SIZE))
-																		.addComponent(initialStartDate,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				263, Short.MAX_VALUE)))
-														.addGroup(gl_panelUpdateEntry.createSequentialGroup()
-																.addGroup(
-																		gl_panelUpdateEntry
-																				.createParallelGroup(
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(jLabel19).addComponent(
-																						jLabel20)
-																				.addComponent(jLabel21))
-																.addGap(18, 18, 18)
-																.addGroup(gl_panelUpdateEntry
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																		.addGroup(
-																				javax.swing.GroupLayout.Alignment.TRAILING,
-																				gl_panelUpdateEntry
-																						.createSequentialGroup()
-																						.addComponent(
-																								revisedBudgetAmount,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								129,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)
-																						.addPreferredGap(
-																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																						.addComponent(revisedCurrency,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								79,
-																								javax.swing.GroupLayout.PREFERRED_SIZE))
-																		.addComponent(revisedEndDate,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)
-																		.addComponent(revisedStartDate,
-																				javax.swing.GroupLayout.Alignment.TRAILING,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)))
-														.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-																gl_panelUpdateEntry.createSequentialGroup()
-																		.addGap(0, 0, Short.MAX_VALUE)
-																		.addComponent(jButton4)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(jButton5).addGap(10, 10, 10)
-																		.addComponent(jButton6)))
-												.addContainerGap()))
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap()
-										.addComponent(jSeparator2).addContainerGap())));
-		gl_panelUpdateEntry.setVerticalGroup(gl_panelUpdateEntry
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
-						.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-						.addComponent(buttonSearchProjectCode)
-						.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGroup(gl_panelUpdateEntry
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(dropdownProjectName, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(buttonSearcProjectName).addComponent(lebelUpdateProjName))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(dropdownProjectCode, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(labelUpdateProjectId))))
-						.addGap(18, 18, 18)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(DescriptionPane, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel15))
-						.addContainerGap(354, Short.MAX_VALUE))
-				.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-						gl_panelUpdateEntry.createSequentialGroup().addGap(187, 187, 187).addGroup(gl_panelUpdateEntry
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(initialStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel16))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(initialEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel17))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(gl_panelUpdateEntry
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(initialBudgetAmount,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(initialCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(jLabel18))
-								.addGap(52, 52, 52)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(revisedStartDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel19))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(revisedEndDate, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel20))
-								.addGap(18, 18, 18)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(gl_panelUpdateEntry
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(revisedBudgetAmount,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(revisedCurrency, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(jLabel21))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47,
-										Short.MAX_VALUE)
-								.addGroup(gl_panelUpdateEntry
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton4).addComponent(jButton6).addComponent(jButton5))
-								.addGap(10, 10, 10)))
-				.addGroup(gl_panelUpdateEntry.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(323, 323, 323)
-								.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addContainerGap(200, Short.MAX_VALUE))));
+			}
 
-		projectEntry.addTab("Update Entry", panelUpdateEntry);
+			private void populateProjectDetails(String projectNameSelected, String projectCodeSelected) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
 
-		jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+				ProjectIdentifierPK id = new ProjectIdentifierPK();
+				id.setProjectId(projectCodeSelected);
+				id.setProjectName(projectNameSelected);
+				projectIdentifierRetrievedForUpdate = basePersistenceHelpers.retrieveProjectIdentifierDetails(id);
+				if (projectIdentifierRetrievedForUpdate != null) {
+					dropdownProjectName.setSelectedItem(projectIdentifierRetrievedForUpdate.getId().getProjectName());
+					dropdownProjectCode.setSelectedItem(projectIdentifierRetrievedForUpdate.getId().getProjectId());
+					textAreaDescription.setText(projectIdentifierRetrievedForUpdate.getProjectDesc());
+					initialStartDate.setDate(projectIdentifierRetrievedForUpdate.getProjectStrtDate());
+					initialEndDate.setDate(projectIdentifierRetrievedForUpdate.getProjectEndDate());
+					initialBudgetAmount
+							.setText(String.valueOf(projectIdentifierRetrievedForUpdate.getProjectBudgetAmt()));
+					initialCurrency.setSelectedItem(projectIdentifierRetrievedForUpdate.getProjectAmountCurrency());
+				}
 
-		jLabel25.setText("Project Code ");
-
-		jLabel26.setText("Description");
-
-		jTextArea3.setColumns(20);
-		jTextArea3.setRows(5);
-		jScrollPane3.setViewportView(jTextArea3);
-
-		jLabel27.setText("Start Date");
-
-		jLabel28.setText("End Date");
-
-		jLabel29.setText("Budget Amount");
-
-		jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
-
-		jButton11.setText("Close Entry");
-
-		jButton12.setText("Reset");
-
-		jButton13.setText("Cancel");
-
-		jButton15.setText("jButton7");
-
-		jComboBox13.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-		jComboBox13.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jComboBox13ActionPerformed(evt);
 			}
 		});
 
-		jLabel30.setText("Project Name ");
+		JSeparator separator = new JSeparator();
 
-		jComboBox14.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+		javax.swing.GroupLayout gl_panelUpdateEntry = new javax.swing.GroupLayout(panelUpdateEntry);
+		gl_panelUpdateEntry.setHorizontalGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
+						.createParallelGroup(Alignment.LEADING).addGroup(gl_panelUpdateEntry
+								.createParallelGroup(Alignment.TRAILING).addGroup(gl_panelUpdateEntry
+										.createSequentialGroup().addGroup(
+												gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(
+														jSeparator2,
+														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
+														.addGroup(gl_panelUpdateEntry
+																.createSequentialGroup().addGroup(gl_panelUpdateEntry
+																		.createParallelGroup(Alignment.LEADING)
+																		.addComponent(labelUpdateProjectId)
+																		.addComponent(lebelUpdateProjName)
+																		.addComponent(jLabel15).addComponent(jLabel16))
+																.addGap(27)
+																.addGroup(gl_panelUpdateEntry
+																		.createParallelGroup(Alignment.LEADING)
+																		.addGroup(gl_panelUpdateEntry
+																				.createSequentialGroup()
+																				.addGroup(gl_panelUpdateEntry
+																						.createParallelGroup(
+																								Alignment.LEADING,
+																								false)
+																						.addComponent(
+																								dropdownProjectCode, 0,
+																								209, Short.MAX_VALUE)
+																						.addComponent(
+																								dropdownProjectName, 0,
+																								GroupLayout.DEFAULT_SIZE,
+																								Short.MAX_VALUE))
+																				.addPreferredGap(
+																						ComponentPlacement.RELATED)
+																				.addComponent(button,
+																						GroupLayout.PREFERRED_SIZE, 45,
+																						GroupLayout.PREFERRED_SIZE))
+																		.addComponent(DescriptionPane,
+																				GroupLayout.DEFAULT_SIZE, 264,
+																				Short.MAX_VALUE)
+																		.addComponent(
+																				initialStartDate,
+																				GroupLayout.DEFAULT_SIZE, 264,
+																				Short.MAX_VALUE)
+																		.addComponent(initialEndDate,
+																				GroupLayout.DEFAULT_SIZE, 264,
+																				Short.MAX_VALUE)
+																		.addGroup(gl_panelUpdateEntry
+																				.createSequentialGroup()
+																				.addComponent(initialBudgetAmount,
+																						GroupLayout.PREFERRED_SIZE, 169,
+																						GroupLayout.PREFERRED_SIZE)
+																				.addPreferredGap(
+																						ComponentPlacement.RELATED)
+																				.addComponent(initialCurrency, 0, 88,
+																						Short.MAX_VALUE)))))
+										.addContainerGap())
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel17)
+										.addContainerGap(333, Short.MAX_VALUE))
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel18)
+										.addContainerGap(297, Short.MAX_VALUE))
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+										.addComponent(separator, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+										.addContainerGap())
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+												.addComponent(jLabel19).addComponent(jLabel20))
+										.addGap(18)
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+												.addComponent(revisedEndDate, GroupLayout.DEFAULT_SIZE, 248,
+														Short.MAX_VALUE)
+												.addComponent(revisedStartDate, GroupLayout.DEFAULT_SIZE, 248,
+														Short.MAX_VALUE))
+										.addContainerGap())
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel21)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(revisedBudgetAmount, GroupLayout.DEFAULT_SIZE, 139,
+												Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE, 79,
+												GroupLayout.PREFERRED_SIZE)
+										.addContainerGap()))
+						.addGroup(Alignment.TRAILING,
+								gl_panelUpdateEntry.createSequentialGroup().addComponent(jButton4)
+										.addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton5).addGap(10)
+										.addComponent(jButton6).addContainerGap()))));
+		gl_panelUpdateEntry.setVerticalGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap()
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+												.addComponent(dropdownProjectName, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lebelUpdateProjName))
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+												.addComponent(dropdownProjectCode, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(labelUpdateProjectId)))
+								.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE))
+						.addGap(18)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel15)
+								.addComponent(DescriptionPane, GroupLayout.PREFERRED_SIZE, 80,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(25)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel16)
+								.addComponent(initialStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel17)
+								.addComponent(initialEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel18)
+								.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+										.addComponent(initialBudgetAmount, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(initialCurrency, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGap(8)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(26)
+										.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+												.addComponent(jLabel19).addComponent(revisedStartDate,
+														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+										.addGap(18)
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+												.addComponent(jLabel20).addComponent(revisedEndDate,
+														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE))
+										.addGap(18)
+										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+												.addComponent(jLabel21).addComponent(revisedBudgetAmount,
+														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(114).addComponent(
+										jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)))
+						.addGap(39).addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jButton4).addComponent(jButton6).addComponent(jButton5))
+						.addGap(115)));
+		panelUpdateEntry.setLayout(gl_panelUpdateEntry);
 
-		jButton16.setText("jButton7");
+		projectEntry.addTab("Update Entry", panelUpdateEntry);
 
-		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-		jPanel4.setLayout(jPanel4Layout);
-		jPanel4Layout.setHorizontalGroup(
-				jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel4Layout
-						.createSequentialGroup()
-						.addContainerGap().addGroup(jPanel4Layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel4Layout
-										.createSequentialGroup().addComponent(jLabel30).addGap(31, 31, 31)
-										.addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, 209,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 41,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(0, 0, Short.MAX_VALUE))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										jPanel4Layout.createSequentialGroup().addComponent(jLabel26)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 263,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel4Layout.createSequentialGroup().addComponent(jLabel25)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, 209,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 41,
-												javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap())
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel4Layout.createSequentialGroup().addContainerGap().addGroup(jPanel4Layout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(jPanel4Layout.createSequentialGroup().addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel27).addComponent(jLabel28).addComponent(jLabel29))
-												.addGap(18, 18, 18)
-												.addGroup(jPanel4Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
-																false)
-														.addComponent(jDateChooser10,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-																jPanel4Layout.createSequentialGroup()
-																		.addComponent(jTextField9)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(jComboBox9,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				82,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addComponent(jDateChooser9,
-																javax.swing.GroupLayout.DEFAULT_SIZE, 263,
-																Short.MAX_VALUE)))
-										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout
-												.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-												.addComponent(jButton11)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton12).addGap(10, 10, 10).addComponent(jButton13)))
-										.addContainerGap())));
-		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel4Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jButton15).addComponent(jLabel30).addComponent(jComboBox13,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel25).addComponent(jButton16).addComponent(jComboBox14,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel26))
-						.addContainerGap(347, Short.MAX_VALUE))
-				.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel4Layout.createSequentialGroup().addGap(187, 187, 187)
-								.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser9, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel27))
-								.addGap(18, 18, 18)
-								.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(jDateChooser10, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel28))
-								.addGap(18, 18, 18)
-								.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addComponent(jLabel29))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197,
-										Short.MAX_VALUE)
-								.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton11).addComponent(jButton13).addComponent(jButton12))
-								.addGap(10, 10, 10))));
+		JLabel label = new JLabel();
+		label.setText("Project Name ");
 
-		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(jPanel4,
-						GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)));
-		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(jPanel4,
-						GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
-		jPanel3.setLayout(jPanel3Layout);
+		JLabel label_1 = new JLabel();
+		label_1.setText("Project Code ");
 
-		projectEntry.addTab("Close Entry", jPanel3);
+		JLabel label_2 = new JLabel();
+		label_2.setText("Budget Amount");
+
+		budgetAmountDelete = new JTextField();
+		budgetAmountDelete.setEditable(false);
+
+		JComboBox<String> currencyDelete = new JComboBox<String>();
+		currencyDelete.setEnabled(false);
+
+		JDateChooser endateDelete = new JDateChooser();
+		endateDelete.getCalendarButton().setEnabled(false);
+
+		JLabel label_3 = new JLabel();
+		label_3.setText("End Date");
+
+		JLabel label_4 = new JLabel();
+		label_4.setText("Start Date");
+
+		JDateChooser startDateDelete = new JDateChooser();
+		startDateDelete.getCalendarButton().setEnabled(false);
+
+		JTextArea textAreaDescriptionDelete = new JTextArea();
+		textAreaDescriptionDelete.setEditable(false);
+		textAreaDescriptionDelete.setRows(5);
+		textAreaDescriptionDelete.setColumns(20);
+
+		JLabel label_5 = new JLabel();
+		label_5.setText("Description");
+
+		JComboBox<String> dropdownProjectIdDelete = new JComboBox<String>();
+		JComboBox<String> dropdownProjectNameDelete = new JComboBox<String>();
+		panelCloseEntry.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
+						.retrieveProjectIdentifiers(null);
+				dropdownProjectIdDelete.removeAllItems();
+				dropdownProjectNameDelete.removeAllItems();
+				for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
+					dropdownProjectIdDelete.addItem(projectIdentifier.getId().getProjectId());
+					dropdownProjectNameDelete.addItem(projectIdentifier.getId().getProjectName());
+				}
+
+			}
+		});
+		JButton populateDeleteDetails = new JButton("...");
+		populateDeleteDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final String projectNameSelected = (String) dropdownProjectNameDelete.getSelectedItem();
+				final String projectCodeSelected = (String) dropdownProjectIdDelete.getSelectedItem();
+
+				populateProjectDetails(projectNameSelected, projectCodeSelected);
+
+			}
+
+			private void populateProjectDetails(String projectNameSelected, String projectCodeSelected) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+
+				ProjectIdentifierPK id = new ProjectIdentifierPK();
+				id.setProjectId(projectCodeSelected);
+				id.setProjectName(projectNameSelected);
+				projectIdentifierRetrievedForDelete = basePersistenceHelpers.retrieveProjectIdentifierDetails(id);
+				if (projectIdentifierRetrievedForDelete != null) {
+					dropdownProjectNameDelete
+							.setSelectedItem(projectIdentifierRetrievedForDelete.getId().getProjectName());
+					dropdownProjectIdDelete.setSelectedItem(projectIdentifierRetrievedForDelete.getId().getProjectId());
+					textAreaDescriptionDelete.setText(projectIdentifierRetrievedForDelete.getProjectDesc());
+					startDateDelete.setDate(projectIdentifierRetrievedForDelete.getProjectStrtDate());
+					endateDelete.setDate(projectIdentifierRetrievedForDelete.getProjectEndDate());
+					budgetAmountDelete
+							.setText(String.valueOf(projectIdentifierRetrievedForDelete.getProjectBudgetAmt()));
+					currencyDelete.setSelectedItem(projectIdentifierRetrievedForDelete.getProjectAmountCurrency());
+				}
+
+			}
+		});
+		
+		btnCloseEntry = new JButton("Close Entry");
+		btnCloseEntry.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				basePersistenceHelpers.deleteProjectIdentifier(projectIdentifierRetrievedForDelete);
+			}
+		});
+		
+		btnReset = new JButton("Reset");
+		
+		btnCancel = new JButton("Cancel");
+
+		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(panelCloseEntry);
+		jPanel3Layout.setHorizontalGroup(
+			jPanel3Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel3Layout.createSequentialGroup()
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(jPanel3Layout.createSequentialGroup()
+									.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+										.addComponent(label, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+										.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
+									.addGap(27)
+									.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+										.addComponent(dropdownProjectNameDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+										.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
+									.addGap(7)
+									.addComponent(populateDeleteDetails, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))
+								.addGroup(jPanel3Layout.createSequentialGroup()
+									.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+									.addGap(46)
+									.addComponent(textAreaDescriptionDelete, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE))
+								.addGroup(jPanel3Layout.createSequentialGroup()
+									.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+									.addGap(50)
+									.addComponent(startDateDelete, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))
+								.addGroup(jPanel3Layout.createSequentialGroup()
+									.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+									.addGap(57)
+									.addComponent(endateDelete, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))
+								.addGroup(jPanel3Layout.createSequentialGroup()
+									.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+									.addGap(21)
+									.addComponent(budgetAmountDelete, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
+									.addGap(7)
+									.addComponent(currencyDelete, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addGap(95)
+							.addComponent(btnCloseEntry)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnReset)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCancel)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		jPanel3Layout.setVerticalGroup(
+			jPanel3Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel3Layout.createSequentialGroup()
+					.addGap(23)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addGap(14)
+							.addComponent(label)
+							.addGap(19)
+							.addComponent(label_1))
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addGap(11)
+							.addComponent(dropdownProjectNameDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(13)
+							.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addGap(11)
+							.addComponent(populateDeleteDetails, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel3Layout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(label_5))
+						.addComponent(textAreaDescriptionDelete, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE))
+					.addGap(10)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_4)
+						.addComponent(startDateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_3)
+						.addComponent(endateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(label_2)
+						.addComponent(budgetAmountDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(currencyDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(63)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCloseEntry)
+						.addComponent(btnReset)
+						.addComponent(btnCancel))
+					.addContainerGap(139, Short.MAX_VALUE))
+		);
+		panelCloseEntry.setLayout(jPanel3Layout);
+
+		projectEntry.addTab("Close Entry", panelCloseEntry);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
+								.createParallelGroup(Alignment.LEADING).addGroup(layout
+										.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addGroup(layout.createSequentialGroup()
+														.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(jLabel6).addGap(0))
+												.addGroup(layout
+														.createSequentialGroup().addComponent(labelCompanyCopyrights)
+														.addPreferredGap(ComponentPlacement.UNRELATED)))
+										.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+								.addComponent(jLabel1)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(layout
+								.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+										.addGroup(layout.createSequentialGroup().addGap(152).addComponent(filler1,
+												GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
+										.addGroup(layout.createSequentialGroup().addGap(180).addComponent(jLabel6)))
+								.addGap(23))
+						.addGroup(layout.createSequentialGroup().addGap(10).addComponent(jLabel1)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(labelCompanyCopyrights).addGap(72)))
+						.addGap(29)));
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout
-						.createSequentialGroup().addGap(12, 12, 12).addGroup(layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-												.addComponent(labelCompanyCopyrights))
-								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										layout.createSequentialGroup().addComponent(projectEntry)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jLabel6).addGap(0, 0, 0).addComponent(filler1,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap())
-				.addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1)
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-						.createSequentialGroup().addGroup(layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-										layout.createSequentialGroup().addGroup(layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(layout.createSequentialGroup().addGap(152, 152, 152)
-														.addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addGroup(layout.createSequentialGroup().addGap(180, 180, 180)
-														.addComponent(jLabel6)))
-												.addGap(23, 23, 23))
-								.addGroup(layout.createSequentialGroup().addGap(10, 10, 10).addComponent(jLabel1)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(projectEntry)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-						.addComponent(labelCompanyCopyrights).addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -902,10 +856,6 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField1ActionPerformed
 		// TODO add your handling code here:
 	}// GEN-LAST:event_jTextField1ActionPerformed
-
-	private void jComboBox13ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jComboBox13ActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_jComboBox13ActionPerformed
 
 	/**
 	 * jComboBox
@@ -959,30 +909,19 @@ public class ProjectEntry extends javax.swing.JFrame {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.Box.Filler filler1;
 	private javax.swing.JButton buttonAddEntry;
-	private javax.swing.JButton jButton11;
-	private javax.swing.JButton jButton12;
-	private javax.swing.JButton jButton13;
-	private javax.swing.JButton jButton15;
-	private javax.swing.JButton jButton16;
 	private javax.swing.JButton buttonCancel;
 	private javax.swing.JButton buttonReset;
 	private javax.swing.JButton jButton4;
 	private javax.swing.JButton jButton5;
 	private javax.swing.JButton jButton6;
-	private javax.swing.JButton buttonSearchProjectCode;
-	private javax.swing.JButton buttonSearcProjectName;
 	private com.toedter.calendar.JCalendar jCalendar1;
 	private javax.swing.JComboBox<String> dropdownCurrency;
-	private javax.swing.JComboBox<String> jComboBox13;
-	private javax.swing.JComboBox<String> jComboBox14;
 	private javax.swing.JComboBox<String> dropdownRevisedCurrency;
 	private javax.swing.JComboBox<String> initialCurrency;
 	private javax.swing.JComboBox<String> revisedCurrency;
 	private javax.swing.JComboBox<String> dropdownProjectName;
 	private javax.swing.JComboBox<String> dropdownProjectCode;
-	private javax.swing.JComboBox<String> jComboBox9;
 	private com.toedter.calendar.JDateChooser dateChooserStartDate;
-	private com.toedter.calendar.JDateChooser jDateChooser10;
 	private com.toedter.calendar.JDateChooser dateChooserEndDate;
 	private com.toedter.calendar.JDateChooser dateChooserRevisedStartDate;
 	private com.toedter.calendar.JDateChooser datechooserRevisedEndDate;
@@ -990,7 +929,6 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private com.toedter.calendar.JDateChooser initialEndDate;
 	private com.toedter.calendar.JDateChooser revisedStartDate;
 	private com.toedter.calendar.JDateChooser revisedEndDate;
-	private com.toedter.calendar.JDateChooser jDateChooser9;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel labelCompanyCopyrights;
 	private javax.swing.JLabel labelRevisedEndDate;
@@ -1005,13 +943,7 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel labelProjectCode;
 	private javax.swing.JLabel jLabel20;
 	private javax.swing.JLabel jLabel21;
-	private javax.swing.JLabel jLabel25;
-	private javax.swing.JLabel jLabel26;
-	private javax.swing.JLabel jLabel27;
-	private javax.swing.JLabel jLabel28;
-	private javax.swing.JLabel jLabel29;
 	private javax.swing.JLabel labelProjectDesc;
-	private javax.swing.JLabel jLabel30;
 	private javax.swing.JLabel labelStartDate;
 	private javax.swing.JLabel labelEndDate;
 	private javax.swing.JLabel jLabel6;
@@ -1020,26 +952,32 @@ public class ProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel labelRevisedStartDate;
 	private javax.swing.JPanel panelNewEntry;
 	private javax.swing.JPanel panelUpdateEntry;
-	private javax.swing.JPanel jPanel3;
-	private javax.swing.JPanel jPanel4;
+	private javax.swing.JPanel panelCloseEntry;
 	private javax.swing.JScrollPane projectDescArea;
 	private javax.swing.JScrollPane DescriptionPane;
-	private javax.swing.JScrollPane jScrollPane3;
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator2;
 	private javax.swing.JTabbedPane jTabbedPane5;
 	private javax.swing.JTextArea textAreaProjectDescription;
 	private javax.swing.JTextArea textAreaDescription;
-	private javax.swing.JTextArea jTextArea3;
 	private javax.swing.JTextField textFieldProjectCode;
 	private javax.swing.JTextField textFieldBudgetAmount;
 	private javax.swing.JTextField textFieldProjectName;
 	private javax.swing.JTextField textFieldRevisedBudgetAmt;
 	private javax.swing.JTextField initialBudgetAmount;
 	private javax.swing.JTextField revisedBudgetAmount;
-	private javax.swing.JTextField jTextField9;
 	private javax.swing.JTabbedPane projectEntry;
 	private final Action action = new SwingAction();
+	private JButton button;
+
+	// variables for local purpose//
+	ProjectIdentifier projectIdentifierRetrievedForUpdate = null;
+	ProjectIdentifier projectIdentifierRetrievedForDelete = null;
+
+	private JTextField budgetAmountDelete;
+	private JButton btnCloseEntry;
+	private JButton btnReset;
+	private JButton btnCancel;
 
 	// End of variables declaration//GEN-END:variables
 	private class SwingAction extends AbstractAction {
