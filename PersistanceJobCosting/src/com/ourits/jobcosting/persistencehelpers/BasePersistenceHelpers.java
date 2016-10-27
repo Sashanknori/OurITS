@@ -10,6 +10,8 @@ import javax.persistence.Query;
 
 import com.ourits.jobcosting.entities.ProjectIdentifier;
 import com.ourits.jobcosting.entities.ProjectIdentifierPK;
+import com.ourits.jobcosting.entities.SubProjectIdentifier;
+import com.ourits.jobcosting.entities.SubProjectIdentifierPK;
 
 public class BasePersistenceHelpers {
 
@@ -113,6 +115,92 @@ public class BasePersistenceHelpers {
 			entityManagerFactory.close();
 		}
 
+	}
+
+	public void createSubProjectIdentifier(SubProjectIdentifier subProjectIdentifier) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		subProjectIdentifier.setCreationTime(timestamp);
+		subProjectIdentifier.setLastModifiedDate(timestamp);
+		try {
+			entityManager.persist(subProjectIdentifier);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	}
+
+	public List<SubProjectIdentifier> retrieveSubProjectIdentifiers(final Integer maxsize) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<SubProjectIdentifier> subProjectIdentifiers = null;
+		try {
+			Query query = entityManager.createNamedQuery("SubProjectIdentifier.findAll");
+			subProjectIdentifiers = query.getResultList();
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+		return (maxsize != null) ? subProjectIdentifiers.subList(0, maxsize) : subProjectIdentifiers;
+	}
+
+	public SubProjectIdentifier retrieveSubProjectIdentifierDetails(SubProjectIdentifierPK id) {
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		SubProjectIdentifier subProjectIdentifierRetrieved = null;
+		entityManager.getTransaction().begin();
+		System.out.println(id);
+		try {
+			subProjectIdentifierRetrieved = entityManager.find(SubProjectIdentifier.class, id);
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+		return subProjectIdentifierRetrieved;
+
+	}
+
+	public void updateSubProjectIdentifier(SubProjectIdentifier subProjectIdentifierRetrievedForUpdate) {
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		subProjectIdentifierRetrievedForUpdate.setLastModifiedDate(timestamp);
+		try {
+			entityManager.merge(subProjectIdentifierRetrievedForUpdate);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	
+		
 	}
 
 }
