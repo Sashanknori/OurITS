@@ -21,6 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
 
 /**
  *
@@ -140,46 +141,6 @@ public class SubProjectEntry extends javax.swing.JFrame {
 		subProjectNameAdd = new javax.swing.JTextField();
 		jButton16 = new javax.swing.JButton();
 		jButton17 = new javax.swing.JButton();
-		jPanel3 = new javax.swing.JPanel();
-		jPanel5 = new javax.swing.JPanel();
-		jButton7 = new javax.swing.JButton();
-		jButton8 = new javax.swing.JButton();
-		jButton9 = new javax.swing.JButton();
-		jLabel47 = new javax.swing.JLabel();
-		jComboBox18 = new javax.swing.JComboBox<>();
-		jLabel48 = new javax.swing.JLabel();
-		jComboBox19 = new javax.swing.JComboBox<>();
-		jLabel49 = new javax.swing.JLabel();
-		jLabel50 = new javax.swing.JLabel();
-		jLabel51 = new javax.swing.JLabel();
-		jTextField16 = new javax.swing.JTextField();
-		jLabel52 = new javax.swing.JLabel();
-		jTextField17 = new javax.swing.JTextField();
-		jLabel53 = new javax.swing.JLabel();
-		jScrollPane5 = new javax.swing.JScrollPane();
-		jTextArea5 = new javax.swing.JTextArea();
-		jLabel54 = new javax.swing.JLabel();
-		jDateChooser15 = new com.toedter.calendar.JDateChooser();
-		jLabel55 = new javax.swing.JLabel();
-		jDateChooser16 = new com.toedter.calendar.JDateChooser();
-		jLabel56 = new javax.swing.JLabel();
-		jTextField18 = new javax.swing.JTextField();
-		jComboBox20 = new javax.swing.JComboBox<>();
-		jSeparator4 = new javax.swing.JSeparator();
-		jLabel57 = new javax.swing.JLabel();
-		jDateChooser17 = new com.toedter.calendar.JDateChooser();
-		jLabel58 = new javax.swing.JLabel();
-		jDateChooser18 = new com.toedter.calendar.JDateChooser();
-		jLabel59 = new javax.swing.JLabel();
-		jTextField19 = new javax.swing.JTextField();
-		jComboBox21 = new javax.swing.JComboBox<>();
-		jComboBox22 = new javax.swing.JComboBox<>();
-		jComboBox23 = new javax.swing.JComboBox<>();
-		jLabel14 = new javax.swing.JLabel();
-		jButton22 = new javax.swing.JButton();
-		jButton23 = new javax.swing.JButton();
-		jButton24 = new javax.swing.JButton();
-		jButton25 = new javax.swing.JButton();
 		// TODO
 		addNewEntryPanel.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -572,7 +533,6 @@ public class SubProjectEntry extends javax.swing.JFrame {
 			}
 		});
 		jButton5 = new javax.swing.JButton();
-		jButton6 = new javax.swing.JButton();
 		jLabel34 = new javax.swing.JLabel();
 		projectNameUpdate = new javax.swing.JComboBox<>();
 		jLabel35 = new javax.swing.JLabel();
@@ -690,8 +650,6 @@ public class SubProjectEntry extends javax.swing.JFrame {
 
 		jButton5.setText("Reset");
 
-		jButton6.setText("Cancel");
-
 		jLabel34.setText("Project Name ");
 
 		projectNameUpdate.setModel(
@@ -743,545 +701,176 @@ public class SubProjectEntry extends javax.swing.JFrame {
 		populateSubProductsDropdown.setText("jButton7");
 
 		populateSubProductDetails.setText("jButton7");
+		
+		JButton btnDeleteSubproject = new JButton();
+		btnDeleteSubproject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				basePersistenceHelpers.deleteSubProjectIdentifier(subProjectIdentifierRetrievedForUpdate);
+				
+			}
+		});
+		btnDeleteSubproject.setText("Delete Sub-Project");
 
 		javax.swing.GroupLayout gl_updateEntry = new javax.swing.GroupLayout(updateEntry);
-		gl_updateEntry.setHorizontalGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING).addGroup(gl_updateEntry
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
-						.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
+		gl_updateEntry.setHorizontalGroup(
+			gl_updateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_updateEntry.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+						.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_updateEntry.createSequentialGroup()
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel44)
-										.addComponent(jLabel45).addComponent(jLabel46))
-								.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel44)
+								.addComponent(jLabel45)
+								.addComponent(jLabel46))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(revisedEndDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(revisedStartDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_updateEntry.createSequentialGroup()
+									.addComponent(revisedBudgetAmt, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(revisedCurrencyAmt, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_updateEntry.createSequentialGroup()
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel39)
+								.addComponent(jLabel38))
+							.addGap(34)
+							.addComponent(revisedContractor, GroupLayout.PREFERRED_SIZE, 247, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_updateEntry.createSequentialGroup()
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(revisedEndDate, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(revisedStartDate, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addGroup(gl_updateEntry.createSequentialGroup()
-												.addComponent(revisedBudgetAmt, GroupLayout.PREFERRED_SIZE, 118,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addComponent(revisedCurrencyAmt, GroupLayout.PREFERRED_SIZE, 75,
-														GroupLayout.PREFERRED_SIZE))))
-						.addGroup(gl_updateEntry.createSequentialGroup()
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel39)
-										.addComponent(jLabel38))
-								.addGap(34).addComponent(revisedContractor, GroupLayout.PREFERRED_SIZE, 247,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(
-								gl_updateEntry.createSequentialGroup()
-										.addGroup(
-												gl_updateEntry
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addGroup(gl_updateEntry
-																.createParallelGroup(Alignment.LEADING, false)
-																.addGroup(gl_updateEntry.createSequentialGroup()
-																		.addGroup(gl_updateEntry
-																				.createParallelGroup(Alignment.LEADING)
-																				.addComponent(jLabel35)
-																				.addComponent(jLabel40)
-																				.addComponent(jLabel41)
-																				.addComponent(jLabel42)
-																				.addComponent(jLabel43)
-																				.addComponent(jLabel34))
-																		.addPreferredGap(ComponentPlacement.RELATED)
-																		.addGroup(gl_updateEntry
-																				.createParallelGroup(Alignment.TRAILING,
-																						false)
-																				.addComponent(jScrollPane4,
-																						GroupLayout.PREFERRED_SIZE,
-																						GroupLayout.DEFAULT_SIZE,
-																						GroupLayout.PREFERRED_SIZE)
-																				.addComponent(initialStartDate,
-																						GroupLayout.DEFAULT_SIZE,
-																						GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
-																				.addComponent(initialEndDate,
-																						GroupLayout.DEFAULT_SIZE,
-																						GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
-																				.addGroup(gl_updateEntry
-																						.createSequentialGroup()
-																						.addComponent(initialBudgetAmt)
-																						.addPreferredGap(
-																								ComponentPlacement.RELATED)
-																						.addComponent(
-																								initialBudgetCurrency,
-																								GroupLayout.PREFERRED_SIZE,
-																								82,
-																								GroupLayout.PREFERRED_SIZE))
-																				.addComponent(projectNameUpdate, 0,
-																						GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE)
-																				.addComponent(projectCodeUpdate,
-																						GroupLayout.PREFERRED_SIZE, 263,
-																						GroupLayout.PREFERRED_SIZE)))
-																.addGroup(gl_updateEntry.createSequentialGroup()
-																		.addComponent(jLabel36).addGap(9)
-																		.addGroup(gl_updateEntry
-																				.createParallelGroup(Alignment.LEADING)
-																				.addGroup(gl_updateEntry
-																						.createSequentialGroup()
-																						.addPreferredGap(
-																								ComponentPlacement.RELATED)
-																						.addComponent(
-																								percentageCompletionUpdate,
-																								GroupLayout.PREFERRED_SIZE,
-																								77,
-																								GroupLayout.PREFERRED_SIZE)
-																						.addPreferredGap(
-																								ComponentPlacement.RELATED)
-																						.addComponent(jLabel13)
-																						.addGap(0, 149,
-																								Short.MAX_VALUE))
-																				.addComponent(subProjectIdUpdate, 0,
-																						GroupLayout.DEFAULT_SIZE,
-																						Short.MAX_VALUE))))
-														.addGroup(gl_updateEntry.createSequentialGroup()
-																.addComponent(jLabel37)
-																.addPreferredGap(ComponentPlacement.RELATED)
-																.addComponent(subprojectNameUpdate,
-																		GroupLayout.PREFERRED_SIZE, 243,
-																		GroupLayout.PREFERRED_SIZE)))
-										.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_updateEntry.createSequentialGroup()
 										.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(populateSubProductsDropdown, GroupLayout.PREFERRED_SIZE,
-														35, GroupLayout.PREFERRED_SIZE)
-												.addComponent(populateSubProductDetails, GroupLayout.PREFERRED_SIZE, 35,
-														GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap())
-				.addGroup(gl_updateEntry.createSequentialGroup().addContainerGap(88, Short.MAX_VALUE)
-						.addComponent(jButton4).addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton5)
-						.addGap(10).addComponent(jButton6).addContainerGap()));
-		gl_updateEntry.setVerticalGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING).addGroup(gl_updateEntry
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+											.addComponent(jLabel35)
+											.addComponent(jLabel40)
+											.addComponent(jLabel41)
+											.addComponent(jLabel42)
+											.addComponent(jLabel43)
+											.addComponent(jLabel34))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING, false)
+											.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addComponent(initialStartDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(initialEndDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addGroup(gl_updateEntry.createSequentialGroup()
+												.addComponent(initialBudgetAmt)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(initialBudgetCurrency, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+											.addComponent(projectNameUpdate, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(projectCodeUpdate, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)))
+									.addGroup(gl_updateEntry.createSequentialGroup()
+										.addComponent(jLabel36)
+										.addGap(9)
+										.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+											.addGroup(gl_updateEntry.createSequentialGroup()
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(percentageCompletionUpdate, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addComponent(jLabel13)
+												.addGap(0, 149, Short.MAX_VALUE))
+											.addComponent(subProjectIdUpdate, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+								.addGroup(gl_updateEntry.createSequentialGroup()
+									.addComponent(jLabel37)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(subprojectNameUpdate, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(populateSubProductsDropdown, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+								.addComponent(populateSubProductDetails, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap())
+				.addGroup(Alignment.TRAILING, gl_updateEntry.createSequentialGroup()
+					.addContainerGap(13, Short.MAX_VALUE)
+					.addComponent(btnDeleteSubproject, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jButton4)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jButton5)
+					.addContainerGap())
+		);
+		gl_updateEntry.setVerticalGroup(
+			gl_updateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_updateEntry.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_updateEntry.createSequentialGroup()
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel34)
-										.addComponent(projectNameUpdate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGap(18)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel35)
-										.addComponent(projectCodeUpdate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(populateSubProductsDropdown, GroupLayout.PREFERRED_SIZE, 65,
-								GroupLayout.PREFERRED_SIZE))
-				.addGap(30)
-				.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel34)
+								.addComponent(projectNameUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel35)
+								.addComponent(projectCodeUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(populateSubProductsDropdown, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+					.addGap(30)
+					.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_updateEntry.createSequentialGroup()
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel36)
-										.addComponent(subProjectIdUpdate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel36)
+								.addComponent(subProjectIdUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(subprojectNameUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel37))
+							.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel38)
+								.addComponent(jLabel13)
+								.addComponent(percentageCompletionUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel39)
+								.addComponent(revisedContractor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel40)
+								.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+							.addGap(26)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
+								.addComponent(initialStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel41))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
+								.addComponent(initialEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel42))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
-										.addComponent(subprojectNameUpdate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel37))
-								.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel38)
-										.addComponent(jLabel13)
-										.addComponent(percentageCompletionUpdate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel39)
-										.addComponent(revisedContractor, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGap(18)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel40)
-										.addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 80,
-												GroupLayout.PREFERRED_SIZE))
-								.addGap(26)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
-										.addComponent(initialStartDate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel41))
-								.addGap(18)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
-										.addComponent(initialEndDate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel42))
-								.addGap(18)
-								.addGroup(gl_updateEntry
-										.createParallelGroup(Alignment.TRAILING)
-										.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(initialBudgetAmt, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(initialBudgetCurrency, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addComponent(jLabel43))
-								.addGap(37)
-								.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
-										.addComponent(revisedStartDate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel44))
-								.addGap(18)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
-										.addComponent(revisedEndDate, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jLabel45))
-								.addGap(18)
-								.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
-										.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(revisedBudgetAmt, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(revisedCurrencyAmt, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addComponent(jLabel46))
-								.addGap(77))
-						.addGroup(
-								gl_updateEntry.createSequentialGroup().addGap(1)
-										.addComponent(populateSubProductDetails, GroupLayout.PREFERRED_SIZE, 58,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, 545, Short.MAX_VALUE)
-										.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(jButton4).addComponent(jButton6).addComponent(jButton5))
-										.addGap(10)))));
+									.addComponent(initialBudgetAmt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(initialBudgetCurrency, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(jLabel43))
+							.addGap(37)
+							.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
+								.addComponent(revisedStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel44))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
+								.addComponent(revisedEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jLabel45))
+							.addGap(18)
+							.addGroup(gl_updateEntry.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+									.addComponent(revisedBudgetAmt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(revisedCurrencyAmt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(jLabel46))
+							.addGap(30))
+						.addGroup(gl_updateEntry.createSequentialGroup()
+							.addGap(1)
+							.addComponent(populateSubProductDetails, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 503, Short.MAX_VALUE)))
+					.addGap(32)
+					.addGroup(gl_updateEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jButton5)
+						.addComponent(jButton4)
+						.addComponent(btnDeleteSubproject))
+					.addGap(10))
+		);
 		updateEntry.setLayout(gl_updateEntry);
 
 		subprojectEntry.addTab("Update Entry", updateEntry);
-
-		jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED,
-				java.awt.Color.lightGray, java.awt.Color.lightGray, java.awt.Color.lightGray,
-				java.awt.Color.lightGray));
-
-		jButton7.setText("Close Sub-Project Entry");
-
-		jButton8.setText("Reset");
-
-		jButton9.setText("Cancel");
-
-		jLabel47.setText("Project Name ");
-
-		jComboBox18.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel48.setText("Project Code ");
-
-		jComboBox19.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel49.setText("Sub Project Code ");
-
-		jLabel50.setText("Sub Project Name ");
-
-		jLabel51.setText("% completion");
-
-		jLabel52.setText("Contractor");
-
-		jLabel53.setText("Description");
-
-		jTextArea5.setColumns(20);
-		jTextArea5.setRows(5);
-		jScrollPane5.setViewportView(jTextArea5);
-
-		jLabel54.setText("Start Date");
-
-		jLabel55.setText("End Date");
-
-		jLabel56.setText("Budget Amount");
-
-		jComboBox20
-				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
-
-		jLabel57.setText("Revised Start Date");
-
-		jLabel58.setText("Revised End Date");
-
-		jLabel59.setText("Revised Budget Amount");
-
-		jComboBox21
-				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "INR", "EUR", "AED", "DHM" }));
-
-		jComboBox22.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jComboBox23.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel14.setText("%");
-
-		jButton22.setText("jButton7");
-
-		jButton23.setText("jButton7");
-
-		jButton24.setText("jButton7");
-
-		jButton25.setText("jButton7");
-
-		javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-		jPanel5.setLayout(jPanel5Layout);
-		jPanel5Layout
-				.setHorizontalGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel5Layout.createSequentialGroup().addContainerGap()
-								.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(jSeparator4).addGroup(jPanel5Layout
-												.createSequentialGroup().addGroup(jPanel5Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(jPanel5Layout.createSequentialGroup().addGroup(
-																jPanel5Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jLabel57).addComponent(jLabel58)
-																		.addComponent(jLabel59))
-																.addGap(18, 18, 18)
-																.addGroup(jPanel5Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				false)
-																		.addComponent(jDateChooser18,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)
-																		.addComponent(jDateChooser17,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE)
-																		.addGroup(jPanel5Layout.createSequentialGroup()
-																				.addComponent(jTextField19,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						118,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																				.addComponent(jComboBox21,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						75,
-																						javax.swing.GroupLayout.PREFERRED_SIZE))))
-														.addGroup(jPanel5Layout.createSequentialGroup()
-																.addGroup(jPanel5Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jLabel52).addComponent(jLabel51))
-																.addGap(34, 34, 34).addComponent(jTextField17,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 247,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addGroup(jPanel5Layout.createSequentialGroup()
-																.addGroup(jPanel5Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.TRAILING,
-																				false)
-																		.addGroup(jPanel5Layout.createSequentialGroup()
-																				.addGroup(jPanel5Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(jLabel48)
-																						.addComponent(jLabel53)
-																						.addComponent(jLabel54)
-																						.addComponent(jLabel55)
-																						.addComponent(jLabel56)
-																						.addComponent(jLabel47))
-																				.addPreferredGap(
-																						javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																				.addGroup(jPanel5Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING,
-																								false)
-																						.addComponent(jScrollPane5)
-																						.addComponent(jDateChooser15,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addComponent(jDateChooser16,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addGroup(
-																								javax.swing.GroupLayout.Alignment.TRAILING,
-																								jPanel5Layout
-																										.createSequentialGroup()
-																										.addComponent(
-																												jTextField18)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												jComboBox20,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												82,
-																												javax.swing.GroupLayout.PREFERRED_SIZE))
-																						.addComponent(jComboBox18, 0,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)
-																						.addComponent(jComboBox19,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								263,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)))
-																		.addGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING,
-																				jPanel5Layout.createSequentialGroup()
-																						.addComponent(jLabel49)
-																						.addGap(9, 9, 9)
-																						.addGroup(jPanel5Layout
-																								.createParallelGroup(
-																										javax.swing.GroupLayout.Alignment.LEADING)
-																								.addGroup(jPanel5Layout
-																										.createSequentialGroup()
-																										.addComponent(
-																												jTextField16,
-																												javax.swing.GroupLayout.PREFERRED_SIZE,
-																												77,
-																												javax.swing.GroupLayout.PREFERRED_SIZE)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												jLabel14)
-																										.addGap(0, 0,
-																												Short.MAX_VALUE))
-																								.addComponent(
-																										jComboBox22, 0,
-																										javax.swing.GroupLayout.DEFAULT_SIZE,
-																										Short.MAX_VALUE))))
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(jPanel5Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(jButton22,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				35,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jButton23,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				35,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(jButton25,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				35,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)))
-														.addGroup(jPanel5Layout.createSequentialGroup()
-																.addComponent(jLabel50)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(jComboBox23,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 243,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(jButton24,
-																		javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-																		javax.swing.GroupLayout.PREFERRED_SIZE)))
-												.addGap(0, 5, Short.MAX_VALUE)))
-								.addContainerGap())
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel5Layout.createSequentialGroup()
-										.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(jButton7)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jButton8).addGap(10, 10, 10).addComponent(jButton9)
-										.addContainerGap())));
-		jPanel5Layout.setVerticalGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel5Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel47)
-								.addComponent(jComboBox18, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton22))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel48)
-								.addComponent(jComboBox19, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton23))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel49)
-								.addComponent(jComboBox22, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton25))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jComboBox23, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel50).addComponent(jButton24))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel51).addComponent(jTextField16,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel14))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel52).addComponent(jTextField17,
-										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jLabel53).addComponent(jScrollPane5,
-										javax.swing.GroupLayout.PREFERRED_SIZE, 80,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(26, 26, 26)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser15, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel54))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser16, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel55))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jComboBox20, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(jLabel56))
-						.addGap(37, 37, 37)
-						.addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser17, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel57))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser18, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel58))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jTextField19, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jComboBox21, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addComponent(jLabel59))
-						.addGap(77, 77, 77))
-				.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel5Layout.createSequentialGroup().addContainerGap(653, Short.MAX_VALUE)
-								.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jButton7).addComponent(jButton9).addComponent(jButton8))
-								.addGap(10, 10, 10))));
-
-		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-		jPanel3.setLayout(jPanel3Layout);
-		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 430, Short.MAX_VALUE)
-				.addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(0, 0, Short.MAX_VALUE))));
-		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 692, Short.MAX_VALUE)
-				.addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(0, 0, Short.MAX_VALUE))));
-
-		subprojectEntry.addTab("Close Entry", jPanel3);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -1380,17 +969,9 @@ public class SubProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JButton populateSubProductsDropdown;
 	private javax.swing.JButton buttonCancel;
 	private javax.swing.JButton populateSubProductDetails;
-	private javax.swing.JButton jButton22;
-	private javax.swing.JButton jButton23;
-	private javax.swing.JButton jButton24;
-	private javax.swing.JButton jButton25;
 	private javax.swing.JButton buttonReset;
 	private javax.swing.JButton jButton4;
 	private javax.swing.JButton jButton5;
-	private javax.swing.JButton jButton6;
-	private javax.swing.JButton jButton7;
-	private javax.swing.JButton jButton8;
-	private javax.swing.JButton jButton9;
 	private com.toedter.calendar.JCalendar jCalendar1;
 	private javax.swing.JComboBox<String> dropdownCurrency;
 	private javax.swing.JComboBox<String> projectNameUpdate;
@@ -1399,13 +980,7 @@ public class SubProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JComboBox<String> revisedCurrencyAmt;
 	private javax.swing.JComboBox<String> subProjectIdUpdate;
 	private javax.swing.JComboBox<String> subprojectNameUpdate;
-	private javax.swing.JComboBox<String> jComboBox18;
-	private javax.swing.JComboBox<String> jComboBox19;
 	private javax.swing.JComboBox<String> jComboBox2;
-	private javax.swing.JComboBox<String> jComboBox20;
-	private javax.swing.JComboBox<String> jComboBox21;
-	private javax.swing.JComboBox<String> jComboBox22;
-	private javax.swing.JComboBox<String> jComboBox23;
 	private javax.swing.JComboBox<String> dropdownProjectNameAdd;
 	private javax.swing.JComboBox<String> dropdownProjectIdAdd;
 	private com.toedter.calendar.JDateChooser startDateAdd;
@@ -1413,10 +988,6 @@ public class SubProjectEntry extends javax.swing.JFrame {
 	private com.toedter.calendar.JDateChooser initialEndDate;
 	private com.toedter.calendar.JDateChooser revisedStartDate;
 	private com.toedter.calendar.JDateChooser revisedEndDate;
-	private com.toedter.calendar.JDateChooser jDateChooser15;
-	private com.toedter.calendar.JDateChooser jDateChooser16;
-	private com.toedter.calendar.JDateChooser jDateChooser17;
-	private com.toedter.calendar.JDateChooser jDateChooser18;
 	private com.toedter.calendar.JDateChooser endDateAdd;
 	private com.toedter.calendar.JDateChooser revisedStartDateAdd;
 	private com.toedter.calendar.JDateChooser revisedEndDateAdd;
@@ -1425,7 +996,6 @@ public class SubProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel jLabel11;
 	private javax.swing.JLabel jLabel12;
 	private javax.swing.JLabel jLabel13;
-	private javax.swing.JLabel jLabel14;
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JLabel jLabel23;
 	private javax.swing.JLabel jLabel3;
@@ -1447,52 +1017,29 @@ public class SubProjectEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel jLabel44;
 	private javax.swing.JLabel jLabel45;
 	private javax.swing.JLabel jLabel46;
-	private javax.swing.JLabel jLabel47;
-	private javax.swing.JLabel jLabel48;
-	private javax.swing.JLabel jLabel49;
 	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel50;
-	private javax.swing.JLabel jLabel51;
-	private javax.swing.JLabel jLabel52;
-	private javax.swing.JLabel jLabel53;
-	private javax.swing.JLabel jLabel54;
-	private javax.swing.JLabel jLabel55;
-	private javax.swing.JLabel jLabel56;
-	private javax.swing.JLabel jLabel57;
-	private javax.swing.JLabel jLabel58;
-	private javax.swing.JLabel jLabel59;
 	private javax.swing.JLabel jLabel6;
 	private javax.swing.JLabel jLabel7;
 	private javax.swing.JLabel jLabel8;
 	private javax.swing.JLabel jLabel9;
 	private javax.swing.JPanel addNewEntryPanel;
 	private javax.swing.JPanel updateEntry;
-	private javax.swing.JPanel jPanel3;
-	private javax.swing.JPanel jPanel5;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JScrollPane jScrollPane4;
-	private javax.swing.JScrollPane jScrollPane5;
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator3;
-	private javax.swing.JSeparator jSeparator4;
 	private javax.swing.JTabbedPane jTabbedPane5;
 	private javax.swing.JTextArea textAreaDescriptionAdd;
 	private javax.swing.JTextArea textAreaDescUpdate;
-	private javax.swing.JTextArea jTextArea5;
 	private javax.swing.JTextField subProjectCodeAdd;
 	private javax.swing.JTextField percentageCompletionUpdate;
 	private javax.swing.JTextField revisedContractor;
 	private javax.swing.JTextField initialBudgetAmt;
 	private javax.swing.JTextField revisedBudgetAmt;
-	private javax.swing.JTextField jTextField16;
-	private javax.swing.JTextField jTextField17;
-	private javax.swing.JTextField jTextField18;
-	private javax.swing.JTextField jTextField19;
 	private javax.swing.JTextField budgetAmountAdd;
 	private javax.swing.JTextField contractorAdd;
 	private javax.swing.JTextField revisedBugetAdd;
 	private javax.swing.JTextField textPercentageCompletionAdd;
 	private javax.swing.JTextField subProjectNameAdd;
 	private javax.swing.JTabbedPane subprojectEntry;
-	// End of variables declaration//GEN-END:variables
 }

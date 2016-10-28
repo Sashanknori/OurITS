@@ -203,4 +203,23 @@ public class BasePersistenceHelpers {
 		
 	}
 
+	public void deleteSubProjectIdentifier(SubProjectIdentifier subProjectIdentifier) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		try {
+			SubProjectIdentifier entity = entityManager.find(SubProjectIdentifier.class, subProjectIdentifier.getId());
+			entityManager.remove(entity);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	}
+
 }
