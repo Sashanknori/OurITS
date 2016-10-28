@@ -12,6 +12,7 @@ import com.ourits.jobcosting.entities.ProjectIdentifier;
 import com.ourits.jobcosting.entities.ProjectIdentifierPK;
 import com.ourits.jobcosting.entities.SubProjectIdentifier;
 import com.ourits.jobcosting.entities.SubProjectIdentifierPK;
+import com.ourits.jobcosting.entities.TaskDentifier;
 
 public class BasePersistenceHelpers {
 
@@ -210,6 +211,27 @@ public class BasePersistenceHelpers {
 		try {
 			SubProjectIdentifier entity = entityManager.find(SubProjectIdentifier.class, subProjectIdentifier.getId());
 			entityManager.remove(entity);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	}
+
+	public void createTaskIdentifier(TaskDentifier taskIdentifier) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		taskIdentifier.setCreationTime(timestamp);
+		taskIdentifier.setLastModifiedDate(timestamp);
+		try {
+			entityManager.persist(taskIdentifier);
 			entityManager.getTransaction().commit();
 		} catch (Exception exception) {
 			exception.printStackTrace();
