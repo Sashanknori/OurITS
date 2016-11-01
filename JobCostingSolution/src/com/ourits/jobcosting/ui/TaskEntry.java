@@ -5,6 +5,7 @@
  */
 package com.ourits.jobcosting.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.ourits.jobcosting.entities.ProjectIdentifier;
@@ -34,6 +36,7 @@ public class TaskEntry extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	protected TaskDentifier taskDetailsForUpdate;
 
 	/**
 	 * Creates new form NewJFrame
@@ -120,13 +123,12 @@ public class TaskEntry extends javax.swing.JFrame {
 				projectIdentifier.setId(projectId);
 				subProjectIdentifier.setProjectIdentifier(projectIdentifier);
 				taskDentifier.setSubProjectIdentifier(subProjectIdentifier);
-				taskDentifier.setTaskEndDate(endDateAdd.getDate() );
+				taskDentifier.setTaskEndDate(endDateAdd.getDate());
 				taskDentifier.setTaskStrtDate(startDateAdd.getDate());
 
 				return taskDentifier;
 			}
 
-		
 		});
 		jButton2 = new javax.swing.JButton();
 		jButton3 = new javax.swing.JButton();
@@ -172,75 +174,159 @@ public class TaskEntry extends javax.swing.JFrame {
 		jLabel60 = new javax.swing.JLabel();
 		taskNameAdd = new javax.swing.JTextField();
 		jPanel2 = new javax.swing.JPanel();
+		jPanel2.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<ProjectIdentifier> projectIndentifiersList = basePersistenceHelpers
+						.retrieveProjectIdentifiers(null);
+				projectCodeUpdate.removeAllItems();
+				projectNameUpdate.removeAllItems();
+				for (ProjectIdentifier projectIdentifier : projectIndentifiersList) {
+					projectCodeUpdate.addItem(projectIdentifier.getId().getProjectId());
+					projectNameUpdate.addItem(projectIdentifier.getId().getProjectName());
+				}
+
+			}
+		});
 		jPanel4 = new javax.swing.JPanel();
 		jLabel3 = new javax.swing.JLabel();
 		jLabel7 = new javax.swing.JLabel();
-		jDateChooser5 = new com.toedter.calendar.JDateChooser();
+		startDateUpdate = new com.toedter.calendar.JDateChooser();
 		jLabel12 = new javax.swing.JLabel();
-		jDateChooser6 = new com.toedter.calendar.JDateChooser();
+		endDateUpdate = new com.toedter.calendar.JDateChooser();
 		jLabel15 = new javax.swing.JLabel();
 		jSeparator2 = new javax.swing.JSeparator();
-		jLabel16 = new javax.swing.JLabel();
-		jDateChooser7 = new com.toedter.calendar.JDateChooser();
-		jLabel17 = new javax.swing.JLabel();
-		jDateChooser8 = new com.toedter.calendar.JDateChooser();
 		jButton10 = new javax.swing.JButton();
+		jButton10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				taskDetailsForUpdate.setPercentageCompletion(new BigDecimal(percentageCompletionUpdate.getText()));
+				taskDetailsForUpdate.setTaskStrtDate(startDateUpdate.getDate());
+				taskDetailsForUpdate.setTaskEndDate(endDateUpdate.getDate());
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				basePersistenceHelpers.updateTaskDetails(taskDetailsForUpdate);
+			}
+		});
 		jButton11 = new javax.swing.JButton();
 		jButton12 = new javax.swing.JButton();
-		jComboBox12 = new javax.swing.JComboBox<>();
-		jComboBox24 = new javax.swing.JComboBox<>();
+		projectNameUpdate = new javax.swing.JComboBox<>();
+		projectCodeUpdate = new javax.swing.JComboBox<>();
 		jLabel24 = new javax.swing.JLabel();
 		jLabel61 = new javax.swing.JLabel();
 		jLabel62 = new javax.swing.JLabel();
-		jTextField6 = new javax.swing.JTextField();
+		percentageCompletionUpdate = new javax.swing.JTextField();
 		jLabel63 = new javax.swing.JLabel();
 		jLabel64 = new javax.swing.JLabel();
 		jButton28 = new javax.swing.JButton();
-		jButton29 = new javax.swing.JButton();
+		jButton28.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				projectCodeUpdate.setEnabled(false);
+				projectNameUpdate.setEnabled(false);
+				final String projectNameSelected = (String) projectNameUpdate.getSelectedItem();
+				final String projectCodeSelected = (String) projectCodeUpdate.getSelectedItem();
+
+				retrieveSubProjects(projectNameSelected, projectCodeSelected);
+				subProjectNameUpdate.setEnabled(true);
+				subProjectIdUpdate.setEnabled(true);
+
+			}
+
+			private void retrieveSubProjects(String projectNameSelected, String projectCodeSelected) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<SubProjectIdentifier> subProjectIdentifiersList = basePersistenceHelpers
+						.retrieveSubProjectIdentifiers(null);
+				subProjectNameUpdate.removeAllItems();
+				subProjectIdUpdate.removeAllItems();
+				for (SubProjectIdentifier subProjectIdentifier : subProjectIdentifiersList) {
+					subProjectIdUpdate.addItem(subProjectIdentifier.getId().getSubProjectId());
+					subProjectNameUpdate.addItem(subProjectIdentifier.getId().getSubProjectName());
+				}
+
+			}
+
+		});
 		jButton30 = new javax.swing.JButton();
-		jComboBox25 = new javax.swing.JComboBox<>();
-		jComboBox26 = new javax.swing.JComboBox<>();
-		jButton31 = new javax.swing.JButton();
+		jButton30.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				subProjectNameUpdate.setEnabled(false);
+				subProjectIdUpdate.setEnabled(false);
+				final String projectNameSelected = (String) projectNameUpdate.getSelectedItem();
+				final String projectCodeSelected = (String) projectCodeUpdate.getSelectedItem();
+				final String subprojectNameSelected = (String) subProjectNameUpdate.getSelectedItem();
+				final String subprojectCodeSelected = (String) subProjectIdUpdate.getSelectedItem();
+
+				retrieveTaskDetails(projectNameSelected, projectCodeSelected, subprojectNameSelected,
+						subprojectCodeSelected);
+
+			}
+
+			private void retrieveTaskDetails(String projectNameSelected, String projectCodeSelected,
+					String subprojectNameSelected, String subprojectCodeSelected) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				List<TaskDentifier> taskIdentifiersList = basePersistenceHelpers.retrieveAllTaskDetails(null);
+				taskNameUpdate.removeAllItems();
+				taskcodeUpdate.removeAllItems();
+				for (TaskDentifier taskDentifier : taskIdentifiersList) {
+					taskcodeUpdate.addItem(taskDentifier.getId().getTaskId());
+					taskNameUpdate.addItem(taskDentifier.getId().getTaskName());
+				}
+
+			}
+
+		});
+		subProjectIdUpdate = new javax.swing.JComboBox<>();
+		subProjectNameUpdate = new javax.swing.JComboBox<>();
 		jLabel65 = new javax.swing.JLabel();
-		jComboBox1 = new javax.swing.JComboBox<>();
+		taskcodeUpdate = new javax.swing.JComboBox<>();
 		jButton32 = new javax.swing.JButton();
-		jComboBox2 = new javax.swing.JComboBox<>();
-		jButton33 = new javax.swing.JButton();
-		jPanel3 = new javax.swing.JPanel();
-		jPanel5 = new javax.swing.JPanel();
-		jLabel18 = new javax.swing.JLabel();
-		jComboBox27 = new javax.swing.JComboBox<>();
-		jButton34 = new javax.swing.JButton();
-		jButton35 = new javax.swing.JButton();
-		jComboBox28 = new javax.swing.JComboBox<>();
-		jLabel19 = new javax.swing.JLabel();
-		jLabel25 = new javax.swing.JLabel();
-		jComboBox29 = new javax.swing.JComboBox<>();
-		jButton36 = new javax.swing.JButton();
-		jButton37 = new javax.swing.JButton();
-		jComboBox30 = new javax.swing.JComboBox<>();
-		jLabel66 = new javax.swing.JLabel();
-		jLabel67 = new javax.swing.JLabel();
-		jComboBox3 = new javax.swing.JComboBox<>();
-		jButton38 = new javax.swing.JButton();
-		jButton39 = new javax.swing.JButton();
-		jComboBox4 = new javax.swing.JComboBox<>();
-		jLabel68 = new javax.swing.JLabel();
-		jLabel69 = new javax.swing.JLabel();
-		jTextField8 = new javax.swing.JTextField();
-		jLabel70 = new javax.swing.JLabel();
-		jLabel20 = new javax.swing.JLabel();
-		jDateChooser9 = new com.toedter.calendar.JDateChooser();
-		jLabel21 = new javax.swing.JLabel();
-		jDateChooser10 = new com.toedter.calendar.JDateChooser();
-		jSeparator5 = new javax.swing.JSeparator();
-		jDateChooser19 = new com.toedter.calendar.JDateChooser();
-		jLabel22 = new javax.swing.JLabel();
-		jLabel26 = new javax.swing.JLabel();
-		jDateChooser20 = new com.toedter.calendar.JDateChooser();
-		jButton13 = new javax.swing.JButton();
-		jButton14 = new javax.swing.JButton();
-		jButton15 = new javax.swing.JButton();
+		jButton32.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				subProjectNameUpdate.setEnabled(false);
+				subProjectIdUpdate.setEnabled(false);
+				taskNameUpdate.setEnabled(false);
+				taskcodeUpdate.setEnabled(false);
+				final String projectNameSelected = (String) projectNameUpdate.getSelectedItem();
+				final String projectCodeSelected = (String) projectCodeUpdate.getSelectedItem();
+				final String subProjectNameSelected = (String) subProjectNameUpdate.getSelectedItem();
+				final String subProjectCodeSelected = (String) subProjectIdUpdate.getSelectedItem();
+				final String taskCode = (String) taskcodeUpdate.getSelectedItem();
+				final String taskname = (String) taskNameUpdate.getSelectedItem();
+
+				populateTaskDetails(projectNameSelected, projectCodeSelected, subProjectNameSelected,
+						subProjectCodeSelected, taskCode, taskname);
+
+			}
+
+			private void populateTaskDetails(String projectNameSelected, String projectCodeSelected,
+					String subProjectNameSelected, String subProjectCodeSelected, String taskCode, String taskname) {
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				TaskDentifierPK taskDentifierPK = new TaskDentifierPK();
+				taskDentifierPK.setProjectId(projectCodeSelected);
+				taskDentifierPK.setProjectName(projectNameSelected);
+				taskDentifierPK.setSubProjectId(subProjectCodeSelected);
+				taskDentifierPK.setSubProjectName(subProjectNameSelected);
+
+				taskDentifierPK.setTaskId(taskCode);
+				taskDentifierPK.setTaskName(taskname);
+				taskDetailsForUpdate = basePersistenceHelpers.retrieveTaskDetails(taskDentifierPK);
+				if (taskDetailsForUpdate != null) {
+					projectNameUpdate.setSelectedItem(taskDetailsForUpdate.getId().getProjectName());
+					projectCodeUpdate.setSelectedItem(taskDetailsForUpdate.getId().getProjectId());
+					subProjectIdUpdate.setSelectedItem(taskDetailsForUpdate.getId().getSubProjectId());
+					subProjectNameUpdate.setSelectedItem(taskDetailsForUpdate.getId().getSubProjectName());
+					taskNameUpdate.setSelectedItem(taskDetailsForUpdate.getId().getTaskName());
+					taskcodeUpdate.setSelectedItem(taskDetailsForUpdate.getId().getTaskId());
+
+					percentageCompletionUpdate.setText(taskDetailsForUpdate.getPercentageCompletion().toString());
+					startDateUpdate.setDate(taskDetailsForUpdate.getTaskStrtDate());
+					endDateUpdate.setDate(taskDetailsForUpdate.getTaskEndDate());
+				}
+
+			}
+
+		});
+		taskNameUpdate = new javax.swing.JComboBox<>();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setBackground(new java.awt.Color(255, 255, 255));
@@ -454,20 +540,16 @@ public class TaskEntry extends javax.swing.JFrame {
 
 		jLabel15.setText("Project Name ");
 
-		jLabel16.setText("Revised Start Date");
-
-		jLabel17.setText("Revised End Date");
-
 		jButton10.setText("Update Task Entry");
 
 		jButton11.setText("Cancel");
 
 		jButton12.setText("Reset");
 
-		jComboBox12.setModel(
+		projectNameUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		jComboBox24.setModel(
+		projectCodeUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
 		jLabel24.setText("Sub Project Code ");
@@ -482,194 +564,172 @@ public class TaskEntry extends javax.swing.JFrame {
 
 		jButton28.setText("jButton7");
 
-		jButton29.setText("jButton7");
-
 		jButton30.setText("jButton7");
 
-		jComboBox25.setModel(
+		subProjectIdUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		jComboBox26.setModel(
+		subProjectNameUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jButton31.setText("jButton7");
 
 		jLabel65.setText("Task Name");
 
-		jComboBox1.setModel(
+		taskcodeUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
 		jButton32.setText("jButton7");
 
-		jComboBox2.setModel(
+		taskNameUpdate.setModel(
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-		jButton33.setText("jButton7");
+		JButton btnDeleteTask = new JButton("Delete Task");
+		btnDeleteTask.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnDeleteTask.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				BasePersistenceHelpers basePersistenceHelpers = new BasePersistenceHelpers();
+				basePersistenceHelpers.deleteTaskIdentifier(taskDetailsForUpdate);
+
+			}
+		});
 
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-		jPanel4.setLayout(jPanel4Layout);
 		jPanel4Layout
-				.setHorizontalGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel4Layout.createSequentialGroup().addContainerGap().addGroup(jPanel4Layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jSeparator2).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										jPanel4Layout.createSequentialGroup().addGap(0, 112, Short.MAX_VALUE)
-												.addComponent(jButton10)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton12).addGap(10, 10, 10).addComponent(jButton11))
-								.addGroup(jPanel4Layout.createSequentialGroup().addComponent(jLabel64).addGap(1, 1, 1)
-										.addComponent(jComboBox26, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jButton31, javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel4Layout.createSequentialGroup().addComponent(jLabel24)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jComboBox25, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jButton30,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel4Layout.createSequentialGroup()
-										.addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel62)
-												.addComponent(jLabel61))
-										.addGap(14, 14, 14)
-										.addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(jPanel4Layout.createSequentialGroup()
-														.addComponent(jTextField6,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 75,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(jLabel63))
-												.addGroup(jPanel4Layout.createSequentialGroup()
-														.addComponent(jComboBox1, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addComponent(jButton32, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-								.addGroup(jPanel4Layout.createSequentialGroup()
-										.addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel16).addComponent(jLabel17))
-										.addGap(47, 47, 47)
-										.addGroup(jPanel4Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addComponent(jDateChooser8, javax.swing.GroupLayout.DEFAULT_SIZE, 200,
-														Short.MAX_VALUE)
-												.addComponent(
-														jDateChooser7, javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addGroup(
-										jPanel4Layout.createSequentialGroup()
-												.addGroup(jPanel4Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jLabel3).addComponent(jLabel7)
-														.addComponent(jLabel12).addComponent(jLabel15))
-												.addGap(11, 11, 11)
-												.addGroup(jPanel4Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
-																false)
-														.addComponent(jDateChooser5,
-																javax.swing.GroupLayout.DEFAULT_SIZE, 263,
-																Short.MAX_VALUE)
-														.addComponent(jDateChooser6,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(jComboBox12, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(jComboBox24, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-												.addGroup(jPanel4Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jButton28, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jButton29, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-								.addGroup(
-										jPanel4Layout.createSequentialGroup().addComponent(jLabel65).addGap(28, 28, 28)
-												.addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-												.addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-														javax.swing.GroupLayout.PREFERRED_SIZE)))
+				.setHorizontalGroup(
+						jPanel4Layout.createParallelGroup(Alignment.LEADING).addGroup(jPanel4Layout
+								.createSequentialGroup().addContainerGap().addGroup(jPanel4Layout.createParallelGroup(
+										Alignment.LEADING)
+										.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGroup(jPanel4Layout.createSequentialGroup()
+												.addGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+														.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+																.addComponent(jLabel24).addComponent(jLabel3)
+																.addComponent(jLabel7).addComponent(jLabel12)
+																.addComponent(jLabel15).addComponent(jLabel64)
+																.addComponent(jLabel62).addComponent(jLabel61)
+																.addComponent(jLabel65))
+														.addComponent(btnDeleteTask))
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+														.addGroup(jPanel4Layout.createSequentialGroup()
+																.addComponent(percentageCompletionUpdate,
+																		GroupLayout.PREFERRED_SIZE, 75,
+																		GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(jLabel63))
+														.addGroup(jPanel4Layout.createSequentialGroup()
+																.addGroup(jPanel4Layout
+																		.createParallelGroup(Alignment.LEADING)
+																		.addComponent(startDateUpdate,
+																				GroupLayout.DEFAULT_SIZE, 290,
+																				Short.MAX_VALUE)
+																		.addComponent(endDateUpdate,
+																				GroupLayout.DEFAULT_SIZE, 290,
+																				Short.MAX_VALUE)
+																		.addGroup(jPanel4Layout.createSequentialGroup()
+																				.addGroup(jPanel4Layout
+																						.createParallelGroup(
+																								Alignment.TRAILING)
+																						.addComponent(projectCodeUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE)
+																						.addComponent(projectNameUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE)
+																						.addComponent(
+																								subProjectIdUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE)
+																						.addComponent(
+																								subProjectNameUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE)
+																						.addComponent(taskcodeUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE)
+																						.addComponent(taskNameUpdate,
+																								Alignment.LEADING, 0,
+																								248, Short.MAX_VALUE))
+																				.addPreferredGap(
+																						ComponentPlacement.RELATED)
+																				.addGroup(jPanel4Layout
+																						.createParallelGroup(
+																								Alignment.LEADING)
+																						.addComponent(jButton32,
+																								GroupLayout.PREFERRED_SIZE,
+																								35,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addComponent(jButton30,
+																								GroupLayout.PREFERRED_SIZE,
+																								35,
+																								GroupLayout.PREFERRED_SIZE)
+																						.addComponent(jButton28,
+																								GroupLayout.PREFERRED_SIZE,
+																								35,
+																								GroupLayout.PREFERRED_SIZE)))
+																		.addGroup(jPanel4Layout.createSequentialGroup()
+																				.addComponent(jButton10)
+																				.addPreferredGap(
+																						ComponentPlacement.RELATED)
+																				.addComponent(jButton12).addGap(10)
+																				.addComponent(jButton11)))
+																.addGap(20)))))
 								.addContainerGap()));
-		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel4Layout.createSequentialGroup().addGap(6, 6, 6)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel15)
-								.addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton29))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel3)
-								.addComponent(jComboBox24, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel4Layout.createSequentialGroup().addGap(6)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE).addComponent(jLabel15)
+								.addComponent(projectNameUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(jButton28))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel24)
-								.addComponent(jComboBox25, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE).addComponent(jLabel3)
+								.addComponent(projectCodeUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(18)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE).addComponent(jLabel24)
+								.addComponent(subProjectIdUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(jButton30))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jComboBox26, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton31).addComponent(jLabel64))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel61)
-								.addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING).addComponent(jLabel64)
+								.addComponent(subProjectNameUpdate, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGap(15)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE).addComponent(jLabel61)
+								.addComponent(taskcodeUpdate, GroupLayout.PREFERRED_SIZE, 20,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(jButton32))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton33))
-								.addComponent(jLabel65))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel63).addComponent(jLabel62))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser5, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING).addComponent(jLabel65)
+								.addComponent(taskNameUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(jPanel4Layout.createSequentialGroup().addGap(18).addComponent(jLabel62))
+								.addGroup(jPanel4Layout.createSequentialGroup().addGap(18)
+										.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(percentageCompletionUpdate, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel63))))
+						.addGap(16)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(startDateUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(jLabel7))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser6, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(endDateUpdate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
 								.addComponent(jLabel12))
-						.addGap(18, 18, 18)
-						.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser7, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel16))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser8, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel17))
-						.addGap(29, 29, 29)
-						.addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jButton10).addComponent(jButton11).addComponent(jButton12))
-						.addContainerGap(22, Short.MAX_VALUE)));
+						.addGap(18)
+						.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+						.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE).addComponent(jButton10)
+								.addComponent(jButton11).addComponent(jButton12).addComponent(btnDeleteTask))
+						.addGap(25)));
+		jPanel4.setLayout(jPanel4Layout);
 
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
 		jPanel2.setLayout(jPanel2Layout);
@@ -689,251 +749,6 @@ public class TaskEntry extends javax.swing.JFrame {
 								.addGap(0, 0, Short.MAX_VALUE))));
 
 		projectEntry.addTab("Update Entry", jPanel2);
-
-		jLabel18.setText("Project Name ");
-
-		jComboBox27.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jButton34.setText("jButton7");
-
-		jButton35.setText("jButton7");
-
-		jComboBox28.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel19.setText("Project Code ");
-
-		jLabel25.setText("Sub Project Code ");
-
-		jComboBox29.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jButton36.setText("jButton7");
-
-		jButton37.setText("jButton7");
-
-		jComboBox30.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel66.setText("Sub Project Name ");
-
-		jLabel67.setText("Task Code");
-
-		jComboBox3.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jButton38.setText("jButton7");
-
-		jButton39.setText("jButton7");
-
-		jComboBox4.setModel(
-				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-		jLabel68.setText("Task Name");
-
-		jLabel69.setText("% completion");
-
-		jLabel70.setText("%");
-
-		jLabel20.setText("Start Date");
-
-		jLabel21.setText("End Date");
-
-		jLabel22.setText("Revised Start Date");
-
-		jLabel26.setText("Revised End Date");
-
-		jButton13.setText("Close Task Entry");
-
-		jButton14.setText("Reset");
-
-		jButton15.setText("Cancel");
-
-		javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-		jPanel5.setLayout(jPanel5Layout);
-		jPanel5Layout
-				.setHorizontalGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel5Layout.createSequentialGroup().addContainerGap().addGroup(jPanel5Layout
-								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(jSeparator5).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-										jPanel5Layout.createSequentialGroup().addGap(0, 122, Short.MAX_VALUE)
-												.addComponent(jButton13)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-												.addComponent(jButton14).addGap(10, 10, 10).addComponent(jButton15))
-								.addGroup(jPanel5Layout.createSequentialGroup().addComponent(jLabel66).addGap(1, 1, 1)
-										.addComponent(jComboBox30, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jButton37, javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel5Layout.createSequentialGroup().addComponent(jLabel25)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jComboBox29, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-										.addComponent(jButton36,
-												javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-												javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel5Layout.createSequentialGroup()
-										.addGroup(jPanel5Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel69)
-												.addComponent(jLabel67))
-										.addGap(14, 14, 14)
-										.addGroup(jPanel5Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(jPanel5Layout.createSequentialGroup()
-														.addComponent(jTextField8,
-																javax.swing.GroupLayout.PREFERRED_SIZE, 75,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(jLabel70))
-												.addGroup(jPanel5Layout.createSequentialGroup()
-														.addComponent(jComboBox3, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addPreferredGap(
-																javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addComponent(jButton38, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-								.addGroup(jPanel5Layout.createSequentialGroup()
-										.addGroup(jPanel5Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(jLabel22).addComponent(jLabel26))
-										.addGap(47, 47, 47)
-										.addGroup(jPanel5Layout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addComponent(jDateChooser20, javax.swing.GroupLayout.DEFAULT_SIZE, 200,
-														Short.MAX_VALUE)
-												.addComponent(
-														jDateChooser19, javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addGroup(
-										jPanel5Layout.createSequentialGroup()
-												.addGroup(jPanel5Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jLabel19)
-														.addComponent(jLabel20).addComponent(jLabel21)
-														.addComponent(jLabel18))
-												.addGap(11, 11, 11)
-												.addGroup(jPanel5Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
-																false)
-														.addComponent(jDateChooser9,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																263, Short.MAX_VALUE)
-														.addComponent(jDateChooser10,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(jComboBox27, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(jComboBox28, 0,
-																javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-												.addGroup(jPanel5Layout
-														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(jButton35, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addComponent(jButton34, javax.swing.GroupLayout.PREFERRED_SIZE,
-																35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-								.addGroup(
-										jPanel5Layout.createSequentialGroup().addComponent(jLabel68).addGap(28, 28, 28)
-												.addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-												.addComponent(jButton39, javax.swing.GroupLayout.PREFERRED_SIZE, 35,
-														javax.swing.GroupLayout.PREFERRED_SIZE)))
-								.addContainerGap()));
-		jPanel5Layout.setVerticalGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel5Layout.createSequentialGroup().addGap(6, 6, 6)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel18)
-								.addComponent(jComboBox27, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton34))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel19)
-								.addComponent(jComboBox28, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton35))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel25)
-								.addComponent(jComboBox29, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton36))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jComboBox30, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton37).addComponent(jLabel66))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabel67)
-								.addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jButton38))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(jButton39))
-								.addComponent(jLabel68))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel70).addComponent(jLabel69))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser9, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel20))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser10, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel21))
-						.addGap(18, 18, 18)
-						.addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE,
-								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser19, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel22))
-						.addGap(18, 18, 18)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-								.addComponent(jDateChooser20, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(jLabel26))
-						.addGap(29, 29, 29)
-						.addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(jButton13).addComponent(jButton15).addComponent(jButton14))
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-
-		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-		jPanel3.setLayout(jPanel3Layout);
-		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 426, Short.MAX_VALUE)
-				.addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(0, 0, Short.MAX_VALUE))));
-		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 556, Short.MAX_VALUE)
-				.addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(jPanel3Layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-								.addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(0, 0, Short.MAX_VALUE))));
-
-		projectEntry.addTab("Close Entry", jPanel3);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -1036,67 +851,34 @@ public class TaskEntry extends javax.swing.JFrame {
 	private javax.swing.JButton jButton10;
 	private javax.swing.JButton jButton11;
 	private javax.swing.JButton jButton12;
-	private javax.swing.JButton jButton13;
-	private javax.swing.JButton jButton14;
-	private javax.swing.JButton jButton15;
 	private javax.swing.JButton populatePossibleSubProjects;
 	private javax.swing.JButton jButton2;
 	private javax.swing.JButton jButton28;
-	private javax.swing.JButton jButton29;
 	private javax.swing.JButton jButton3;
 	private javax.swing.JButton jButton30;
-	private javax.swing.JButton jButton31;
 	private javax.swing.JButton jButton32;
-	private javax.swing.JButton jButton33;
-	private javax.swing.JButton jButton34;
-	private javax.swing.JButton jButton35;
-	private javax.swing.JButton jButton36;
-	private javax.swing.JButton jButton37;
-	private javax.swing.JButton jButton38;
-	private javax.swing.JButton jButton39;
 	private com.toedter.calendar.JCalendar jCalendar1;
-	private javax.swing.JComboBox<String> jComboBox1;
+	private javax.swing.JComboBox<String> taskcodeUpdate;
 	private javax.swing.JComboBox<String> subProjectNameAdd;
-	private javax.swing.JComboBox<String> jComboBox12;
-	private javax.swing.JComboBox<String> jComboBox2;
-	private javax.swing.JComboBox<String> jComboBox24;
-	private javax.swing.JComboBox<String> jComboBox25;
-	private javax.swing.JComboBox<String> jComboBox26;
-	private javax.swing.JComboBox<String> jComboBox27;
-	private javax.swing.JComboBox<String> jComboBox28;
-	private javax.swing.JComboBox<String> jComboBox29;
-	private javax.swing.JComboBox<String> jComboBox3;
-	private javax.swing.JComboBox<String> jComboBox30;
-	private javax.swing.JComboBox<String> jComboBox4;
+	private javax.swing.JComboBox<String> projectNameUpdate;
+	private javax.swing.JComboBox<String> taskNameUpdate;
+	private javax.swing.JComboBox<String> projectCodeUpdate;
+	private javax.swing.JComboBox<String> subProjectIdUpdate;
+	private javax.swing.JComboBox<String> subProjectNameUpdate;
 	private javax.swing.JComboBox<String> projectnameAdd;
 	private javax.swing.JComboBox<String> projectCodeAdd;
 	private javax.swing.JComboBox<String> SubProjectCodeAdd;
 	private com.toedter.calendar.JDateChooser startDateAdd;
-	private com.toedter.calendar.JDateChooser jDateChooser10;
-	private com.toedter.calendar.JDateChooser jDateChooser19;
 	private com.toedter.calendar.JDateChooser endDateAdd;
-	private com.toedter.calendar.JDateChooser jDateChooser20;
-	private com.toedter.calendar.JDateChooser jDateChooser5;
-	private com.toedter.calendar.JDateChooser jDateChooser6;
-	private com.toedter.calendar.JDateChooser jDateChooser7;
-	private com.toedter.calendar.JDateChooser jDateChooser8;
-	private com.toedter.calendar.JDateChooser jDateChooser9;
+	private com.toedter.calendar.JDateChooser startDateUpdate;
+	private com.toedter.calendar.JDateChooser endDateUpdate;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel10;
 	private javax.swing.JLabel jLabel12;
 	private javax.swing.JLabel jLabel15;
-	private javax.swing.JLabel jLabel16;
-	private javax.swing.JLabel jLabel17;
-	private javax.swing.JLabel jLabel18;
-	private javax.swing.JLabel jLabel19;
 	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel20;
-	private javax.swing.JLabel jLabel21;
-	private javax.swing.JLabel jLabel22;
 	private javax.swing.JLabel jLabel23;
 	private javax.swing.JLabel jLabel24;
-	private javax.swing.JLabel jLabel25;
-	private javax.swing.JLabel jLabel26;
 	private javax.swing.JLabel jLabel3;
 	private javax.swing.JLabel jLabel30;
 	private javax.swing.JLabel jLabel31;
@@ -1111,27 +893,17 @@ public class TaskEntry extends javax.swing.JFrame {
 	private javax.swing.JLabel jLabel63;
 	private javax.swing.JLabel jLabel64;
 	private javax.swing.JLabel jLabel65;
-	private javax.swing.JLabel jLabel66;
-	private javax.swing.JLabel jLabel67;
-	private javax.swing.JLabel jLabel68;
-	private javax.swing.JLabel jLabel69;
 	private javax.swing.JLabel jLabel7;
-	private javax.swing.JLabel jLabel70;
 	private javax.swing.JLabel jLabel8;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JPanel jPanel2;
-	private javax.swing.JPanel jPanel3;
 	private javax.swing.JPanel jPanel4;
-	private javax.swing.JPanel jPanel5;
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JSeparator jSeparator2;
-	private javax.swing.JSeparator jSeparator5;
 	private javax.swing.JTabbedPane jTabbedPane5;
 	private javax.swing.JTextField taskIdAdd;
 	private javax.swing.JTextField percentageCompletionAdd;
-	private javax.swing.JTextField jTextField6;
+	private javax.swing.JTextField percentageCompletionUpdate;
 	private javax.swing.JTextField taskNameAdd;
-	private javax.swing.JTextField jTextField8;
 	private javax.swing.JTabbedPane projectEntry;
-	// End of variables declaration//GEN-END:variables
 }

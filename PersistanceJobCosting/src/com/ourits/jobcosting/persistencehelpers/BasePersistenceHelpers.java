@@ -13,6 +13,7 @@ import com.ourits.jobcosting.entities.ProjectIdentifierPK;
 import com.ourits.jobcosting.entities.SubProjectIdentifier;
 import com.ourits.jobcosting.entities.SubProjectIdentifierPK;
 import com.ourits.jobcosting.entities.TaskDentifier;
+import com.ourits.jobcosting.entities.TaskDentifierPK;
 
 public class BasePersistenceHelpers {
 
@@ -243,5 +244,91 @@ public class BasePersistenceHelpers {
 		}
 
 	}
+
+	public List<TaskDentifier> retrieveAllTaskDetails(Integer maxsize) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		List<TaskDentifier> taskIdentifiers = null;
+		try {
+			Query query = entityManager.createNamedQuery("TaskDentifier.findAll");
+			taskIdentifiers = query.getResultList();
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+		return (maxsize != null) ? taskIdentifiers.subList(0, maxsize) : taskIdentifiers;
+	}
+
+	public TaskDentifier retrieveTaskDetails(TaskDentifierPK taskDentifierPK) {
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		TaskDentifier taskIdentifierRetrieved = null;
+		entityManager.getTransaction().begin();
+		System.out.println(taskDentifierPK);
+		try {
+			taskIdentifierRetrieved = entityManager.find(TaskDentifier.class, taskDentifierPK);
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+		return taskIdentifierRetrieved;
+
+	}
+
+	public void updateTaskDetails(TaskDentifier taskDetailsForUpdate) {
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		taskDetailsForUpdate.setLastModifiedDate(timestamp);
+		try {
+			entityManager.merge(taskDetailsForUpdate);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	
+		
+	}
+	
+
+	public void deleteTaskIdentifier(TaskDentifier taskDetailsForUpdate) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistanceJobCosting");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		try {
+			TaskDentifier entity = entityManager.find(TaskDentifier.class, taskDetailsForUpdate.getId());
+			entityManager.remove(entity);
+			entityManager.getTransaction().commit();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+
+		finally {
+			entityManager.close();
+			entityManagerFactory.close();
+		}
+
+	}
+
 
 }

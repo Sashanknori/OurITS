@@ -32,6 +32,13 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextArea;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.ComponentOrientation;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -48,6 +55,14 @@ public class ProjectEntry extends javax.swing.JFrame {
 	 * Creates new form NewJFrame
 	 */
 	public ProjectEntry() {
+		getContentPane().setFocusTraversalKeysEnabled(false);
+		getContentPane().setFocusTraversalPolicyProvider(true);
+		getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		getContentPane().addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+			}
+		});
 		initComponents();
 	}
 
@@ -70,6 +85,8 @@ public class ProjectEntry extends javax.swing.JFrame {
 		projectEntry = new javax.swing.JTabbedPane();
 		projectEntry.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		panelNewEntry = new javax.swing.JPanel();
+		panelNewEntry.setEnabled(false);
+		panelNewEntry.setAutoscrolls(true);
 		labelProjectCode = new javax.swing.JLabel();
 		textFieldProjectCode = new javax.swing.JTextField();
 		textFieldProjectCode.setColumns(10);
@@ -89,11 +106,13 @@ public class ProjectEntry extends javax.swing.JFrame {
 		labelRevisedStartDate = new javax.swing.JLabel();
 		labelRevisedStartDate.setEnabled(false);
 		dateChooserRevisedStartDate = new com.toedter.calendar.JDateChooser();
+		dateChooserRevisedStartDate.setEnabled(false);
 		dateChooserRevisedStartDate.getCalendarButton().setBackground(SystemColor.activeCaptionBorder);
 		dateChooserRevisedStartDate.getCalendarButton().setEnabled(false);
 		labelRevisedEndDate = new javax.swing.JLabel();
 		labelRevisedEndDate.setEnabled(false);
 		datechooserRevisedEndDate = new com.toedter.calendar.JDateChooser();
+		datechooserRevisedEndDate.setEnabled(false);
 		datechooserRevisedEndDate.setBackground(Color.LIGHT_GRAY);
 		datechooserRevisedEndDate.getCalendarButton().setEnabled(false);
 		labelRevisedBudgetAmount = new javax.swing.JLabel();
@@ -267,133 +286,105 @@ public class ProjectEntry extends javax.swing.JFrame {
 		buttonReset.setText("Reset");
 
 		javax.swing.GroupLayout gl_panelNewEntry = new javax.swing.GroupLayout(panelNewEntry);
-		gl_panelNewEntry.setHorizontalGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelNewEntry
-						.createSequentialGroup().addContainerGap().addGroup(gl_panelNewEntry
-								.createParallelGroup(Alignment.TRAILING)
-								.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panelNewEntry.createSequentialGroup().addGroup(gl_panelNewEntry
-										.createParallelGroup(Alignment.LEADING).addComponent(labelProjectCode)
-										.addComponent(labelProjectDesc)
-										.addComponent(labelStartDate)
-										.addComponent(labelEndDate).addComponent(labelBudgetAmt)
-										.addComponent(labelProjectName)).addGap(18).addGroup(
-												gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
-														.addComponent(textFieldProjectCode)
-														.addComponent(projectDescArea, GroupLayout.DEFAULT_SIZE, 263,
-																Short.MAX_VALUE)
-														.addComponent(dateChooserStartDate, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(dateChooserEndDate, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addGroup(gl_panelNewEntry.createSequentialGroup()
-																.addComponent(textFieldBudgetAmount).addPreferredGap(
-																		ComponentPlacement.RELATED)
-																.addComponent(dropdownCurrency,
-																		GroupLayout.PREFERRED_SIZE, 82,
-																		GroupLayout.PREFERRED_SIZE))
-														.addComponent(textFieldProjectName)))
-								.addGroup(gl_panelNewEntry.createSequentialGroup()
-										.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(labelRevisedStartDate).addComponent(labelRevisedEndDate)
-												.addComponent(labelRevisedBudgetAmount))
-										.addGap(18)
-										.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
-												.addGroup(gl_panelNewEntry.createSequentialGroup()
-														.addComponent(textFieldRevisedBudgetAmt,
-																GroupLayout.PREFERRED_SIZE, 129,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED).addComponent(
-																dropdownRevisedCurrency, GroupLayout.PREFERRED_SIZE, 79,
-																GroupLayout.PREFERRED_SIZE))
-												.addComponent(datechooserRevisedEndDate, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(dateChooserRevisedStartDate, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-						.addContainerGap())
-				.addGroup(Alignment.TRAILING,
-						gl_panelNewEntry.createSequentialGroup().addContainerGap(140, Short.MAX_VALUE)
-								.addComponent(buttonAddEntry).addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(buttonReset).addGap(10).addComponent(buttonCancel).addContainerGap()));
-		gl_panelNewEntry
-				.setVerticalGroup(
-						gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
-								.addGroup(
-										gl_panelNewEntry.createSequentialGroup().addGap(7)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
-														.addComponent(labelProjectName)
-														.addComponent(textFieldProjectName, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addGap(18)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
-														.addComponent(labelProjectCode).addComponent(
-																textFieldProjectCode, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addGap(18)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
-														.addComponent(labelProjectDesc).addComponent(projectDescArea,
-																GroupLayout.PREFERRED_SIZE, 80,
-																GroupLayout.PREFERRED_SIZE))
-												.addGap(26)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-														.addComponent(dateChooserStartDate, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addComponent(labelStartDate))
-												.addGap(18)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-														.addComponent(dateChooserEndDate,
-																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(labelEndDate))
-												.addGap(18)
-												.addGroup(
-														gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-																.addGroup(gl_panelNewEntry
-																		.createParallelGroup(Alignment.BASELINE)
-																		.addComponent(textFieldBudgetAmount,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addComponent(dropdownCurrency,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE))
-																.addComponent(labelBudgetAmt))
-												.addGap(18)
-												.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addGap(32)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-														.addComponent(dateChooserRevisedStartDate,
-																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(labelRevisedStartDate))
-												.addGap(18)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-														.addComponent(datechooserRevisedEndDate,
-																GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(labelRevisedEndDate))
-												.addGap(18)
-												.addGroup(
-														gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
-																.addGroup(gl_panelNewEntry
-																		.createParallelGroup(Alignment.BASELINE)
-																		.addComponent(textFieldRevisedBudgetAmt,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE)
-																		.addComponent(dropdownRevisedCurrency,
-																				GroupLayout.PREFERRED_SIZE,
-																				GroupLayout.DEFAULT_SIZE,
-																				GroupLayout.PREFERRED_SIZE))
-																.addComponent(labelRevisedBudgetAmount))
-												.addGap(43)
-												.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
-														.addComponent(buttonAddEntry).addComponent(buttonCancel)
-														.addComponent(buttonReset))
-												.addContainerGap(109, Short.MAX_VALUE)));
+		gl_panelNewEntry.setHorizontalGroup(
+			gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelNewEntry.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+							.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_panelNewEntry.createSequentialGroup()
+								.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+									.addComponent(labelProjectCode)
+									.addComponent(labelProjectDesc)
+									.addComponent(labelStartDate)
+									.addComponent(labelEndDate)
+									.addComponent(labelBudgetAmt)
+									.addComponent(labelProjectName))
+								.addGap(18)
+								.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(textFieldProjectCode)
+									.addComponent(projectDescArea, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+									.addComponent(dateChooserStartDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(dateChooserEndDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGroup(gl_panelNewEntry.createSequentialGroup()
+										.addComponent(textFieldBudgetAmount)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(dropdownCurrency, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
+									.addComponent(textFieldProjectName)))
+							.addGroup(gl_panelNewEntry.createSequentialGroup()
+								.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+									.addComponent(labelRevisedStartDate)
+									.addComponent(labelRevisedEndDate)
+									.addComponent(labelRevisedBudgetAmount))
+								.addGap(18)
+								.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING, false)
+									.addGroup(gl_panelNewEntry.createSequentialGroup()
+										.addComponent(textFieldRevisedBudgetAmt, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(dropdownRevisedCurrency, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))
+									.addComponent(datechooserRevisedEndDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(dateChooserRevisedStartDate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+						.addGroup(Alignment.TRAILING, gl_panelNewEntry.createSequentialGroup()
+							.addComponent(buttonAddEntry)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(buttonReset)
+							.addGap(10)
+							.addComponent(buttonCancel)))
+					.addContainerGap())
+		);
+		gl_panelNewEntry.setVerticalGroup(
+			gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelNewEntry.createSequentialGroup()
+					.addGap(7)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(labelProjectName)
+						.addComponent(textFieldProjectName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(labelProjectCode)
+						.addComponent(textFieldProjectCode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.LEADING)
+						.addComponent(labelProjectDesc)
+						.addComponent(projectDescArea, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+					.addGap(26)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addComponent(dateChooserStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelStartDate))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addComponent(dateChooserEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelEndDate))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textFieldBudgetAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(dropdownCurrency, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(labelBudgetAmt))
+					.addGap(18)
+					.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(32)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addComponent(dateChooserRevisedStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelRevisedStartDate))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addComponent(datechooserRevisedEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(labelRevisedEndDate))
+					.addGap(18)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+							.addComponent(textFieldRevisedBudgetAmt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(dropdownRevisedCurrency, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(labelRevisedBudgetAmount))
+					.addPreferredGap(ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+					.addGroup(gl_panelNewEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(buttonAddEntry)
+						.addComponent(buttonCancel)
+						.addComponent(buttonReset))
+					.addGap(22))
+		);
 		panelNewEntry.setLayout(gl_panelNewEntry);
 
 		projectEntry.addTab("New Entry", panelNewEntry);
@@ -439,6 +430,7 @@ public class ProjectEntry extends javax.swing.JFrame {
 				new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
 		button = new JButton("...");
+		button.setBorder(new LineBorder(new Color(0, 0, 0)));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dropdownProjectName.setEnabled(false);
@@ -474,153 +466,118 @@ public class ProjectEntry extends javax.swing.JFrame {
 		JSeparator separator = new JSeparator();
 
 		javax.swing.GroupLayout gl_panelUpdateEntry = new javax.swing.GroupLayout(panelUpdateEntry);
-		gl_panelUpdateEntry.setHorizontalGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap().addGroup(gl_panelUpdateEntry
-						.createParallelGroup(Alignment.LEADING).addGroup(gl_panelUpdateEntry
-								.createParallelGroup(Alignment.TRAILING).addGroup(gl_panelUpdateEntry
-										.createSequentialGroup().addGroup(
-												gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(
-														jSeparator2,
-														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE)
-														.addGroup(gl_panelUpdateEntry
-																.createSequentialGroup().addGroup(gl_panelUpdateEntry
-																		.createParallelGroup(Alignment.LEADING)
-																		.addComponent(labelUpdateProjectId)
-																		.addComponent(lebelUpdateProjName)
-																		.addComponent(jLabel15).addComponent(jLabel16))
-																.addGap(27)
-																.addGroup(gl_panelUpdateEntry
-																		.createParallelGroup(Alignment.LEADING)
-																		.addGroup(gl_panelUpdateEntry
-																				.createSequentialGroup()
-																				.addGroup(gl_panelUpdateEntry
-																						.createParallelGroup(
-																								Alignment.LEADING,
-																								false)
-																						.addComponent(
-																								dropdownProjectCode, 0,
-																								209, Short.MAX_VALUE)
-																						.addComponent(
-																								dropdownProjectName, 0,
-																								GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE))
-																				.addPreferredGap(
-																						ComponentPlacement.RELATED)
-																				.addComponent(button,
-																						GroupLayout.PREFERRED_SIZE, 45,
-																						GroupLayout.PREFERRED_SIZE))
-																		.addComponent(DescriptionPane,
-																				GroupLayout.DEFAULT_SIZE, 264,
-																				Short.MAX_VALUE)
-																		.addComponent(
-																				initialStartDate,
-																				GroupLayout.DEFAULT_SIZE, 264,
-																				Short.MAX_VALUE)
-																		.addComponent(initialEndDate,
-																				GroupLayout.DEFAULT_SIZE, 264,
-																				Short.MAX_VALUE)
-																		.addGroup(gl_panelUpdateEntry
-																				.createSequentialGroup()
-																				.addComponent(initialBudgetAmount,
-																						GroupLayout.PREFERRED_SIZE, 169,
-																						GroupLayout.PREFERRED_SIZE)
-																				.addPreferredGap(
-																						ComponentPlacement.RELATED)
-																				.addComponent(initialCurrency, 0, 88,
-																						Short.MAX_VALUE)))))
-										.addContainerGap())
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel17)
-										.addContainerGap(333, Short.MAX_VALUE))
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel18)
-										.addContainerGap(297, Short.MAX_VALUE))
+		gl_panelUpdateEntry.setHorizontalGroup(
+			gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.TRAILING)
+						.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(labelUpdateProjectId)
+								.addComponent(jLabel15)
+								.addComponent(jLabel16)
+								.addComponent(lebelUpdateProjName))
+							.addGap(27)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
-										.addComponent(separator, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
-										.addContainerGap())
+									.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.TRAILING)
+										.addComponent(dropdownProjectName, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(dropdownProjectCode, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(button, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
+								.addComponent(DescriptionPane, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(initialStartDate, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(initialEndDate, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
 								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(jLabel19).addComponent(jLabel20))
-										.addGap(18)
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(revisedEndDate, GroupLayout.DEFAULT_SIZE, 248,
-														Short.MAX_VALUE)
-												.addComponent(revisedStartDate, GroupLayout.DEFAULT_SIZE, 248,
-														Short.MAX_VALUE))
-										.addContainerGap())
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addComponent(jLabel21)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(revisedBudgetAmount, GroupLayout.DEFAULT_SIZE, 139,
-												Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE, 79,
-												GroupLayout.PREFERRED_SIZE)
-										.addContainerGap()))
-						.addGroup(Alignment.TRAILING,
-								gl_panelUpdateEntry.createSequentialGroup().addComponent(jButton4)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton5).addGap(10)
-										.addComponent(jButton6).addContainerGap()))));
-		gl_panelUpdateEntry.setVerticalGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelUpdateEntry.createSequentialGroup().addContainerGap()
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.TRAILING, false)
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup()
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(dropdownProjectName, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(lebelUpdateProjName))
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(dropdownProjectCode, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(labelUpdateProjectId)))
-								.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE))
-						.addGap(18)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE).addComponent(jLabel15)
-								.addComponent(DescriptionPane, GroupLayout.PREFERRED_SIZE, 80,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(25)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel16)
-								.addComponent(initialStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel17)
-								.addComponent(initialEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING).addComponent(jLabel18)
-								.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
-										.addComponent(initialBudgetAmount, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(initialCurrency, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGap(8)
-						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(26)
-										.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(jLabel19).addComponent(revisedStartDate,
-														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE))
-										.addGap(18)
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
-												.addComponent(jLabel20).addComponent(revisedEndDate,
-														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE))
-										.addGap(18)
-										.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
-												.addComponent(jLabel21).addComponent(revisedBudgetAmount,
-														GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-								.addGroup(gl_panelUpdateEntry.createSequentialGroup().addGap(114).addComponent(
-										jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-						.addGap(39).addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
-								.addComponent(jButton4).addComponent(jButton6).addComponent(jButton5))
-						.addGap(115)));
+									.addComponent(initialBudgetAmount, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(initialCurrency, 0, 88, Short.MAX_VALUE))))
+						.addComponent(jLabel17)
+						.addComponent(jLabel18)
+						.addComponent(separator, GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel19)
+								.addComponent(jLabel20))
+							.addGap(18)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(revisedEndDate, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+								.addComponent(revisedStartDate, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)))
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addComponent(jLabel21)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(revisedBudgetAmount, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addComponent(jButton4)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(jButton5)
+							.addGap(10)
+							.addComponent(jButton6)))
+					.addContainerGap())
+		);
+		gl_panelUpdateEntry.setVerticalGroup(
+			gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+					.addContainerGap(47, Short.MAX_VALUE)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(lebelUpdateProjName)
+								.addComponent(dropdownProjectName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(19)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(dropdownProjectCode, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(labelUpdateProjectId)))
+						.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(18)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel15)
+						.addComponent(DescriptionPane, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
+					.addGap(25)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+						.addComponent(jLabel16)
+						.addComponent(initialStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+						.addComponent(jLabel17)
+						.addComponent(initialEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+						.addComponent(jLabel18)
+						.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+							.addComponent(initialBudgetAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(initialCurrency, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(8)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addGap(26)
+							.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel19)
+								.addComponent(revisedStartDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.LEADING)
+								.addComponent(jLabel20)
+								.addComponent(revisedEndDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel21)
+								.addComponent(revisedBudgetAmount, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(revisedCurrency, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panelUpdateEntry.createSequentialGroup()
+							.addGap(114)
+							.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(127)
+					.addGroup(gl_panelUpdateEntry.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jButton4)
+						.addComponent(jButton6)
+						.addComponent(jButton5))
+					.addGap(27))
+		);
 		panelUpdateEntry.setLayout(gl_panelUpdateEntry);
 
 		projectEntry.addTab("Update Entry", panelUpdateEntry);
@@ -722,92 +679,89 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(panelCloseEntry);
 		jPanel3Layout.setHorizontalGroup(
-			jPanel3Layout.createParallelGroup(Alignment.LEADING)
+			jPanel3Layout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(jPanel3Layout.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
 						.addGroup(jPanel3Layout.createSequentialGroup()
-							.addContainerGap()
 							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-								.addGroup(jPanel3Layout.createSequentialGroup()
-									.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-										.addComponent(label, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-										.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
-									.addGap(27)
-									.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-										.addComponent(dropdownProjectNameDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
-										.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
-									.addGap(7)
-									.addComponent(populateDeleteDetails, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel3Layout.createSequentialGroup()
-									.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-									.addGap(46)
-									.addComponent(textAreaDescriptionDelete, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel3Layout.createSequentialGroup()
-									.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addGap(50)
-									.addComponent(startDateDelete, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel3Layout.createSequentialGroup()
-									.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-									.addGap(57)
-									.addComponent(endateDelete, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))
-								.addGroup(jPanel3Layout.createSequentialGroup()
-									.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
-									.addGap(21)
-									.addComponent(budgetAmountDelete, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
-									.addGap(7)
-									.addComponent(currencyDelete, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(jPanel3Layout.createSequentialGroup()
-							.addGap(95)
-							.addComponent(btnCloseEntry)
+								.addComponent(label, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
+							.addGap(27)
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(dropdownProjectNameDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+								.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnReset)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCancel)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(populateDeleteDetails, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(endateDelete, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE)
+								.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+									.addGroup(jPanel3Layout.createSequentialGroup()
+										.addComponent(btnCloseEntry)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnReset)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnCancel))
+									.addGroup(jPanel3Layout.createSequentialGroup()
+										.addComponent(budgetAmountDelete, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(currencyDelete, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)))))
+						.addGroup(Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(textAreaDescriptionDelete)
+								.addComponent(startDateDelete, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))))
+					.addContainerGap())
 		);
 		jPanel3Layout.setVerticalGroup(
 			jPanel3Layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(jPanel3Layout.createSequentialGroup()
 					.addGap(23)
-					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(jPanel3Layout.createSequentialGroup()
 							.addGap(14)
-							.addComponent(label)
-							.addGap(19)
-							.addComponent(label_1))
+							.addComponent(label))
 						.addGroup(jPanel3Layout.createSequentialGroup()
 							.addGap(11)
 							.addComponent(dropdownProjectNameDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(13)
-							.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(27)
+							.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(dropdownProjectIdDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_1)))
 						.addGroup(jPanel3Layout.createSequentialGroup()
 							.addGap(11)
-							.addComponent(populateDeleteDetails, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(jPanel3Layout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(label_5))
-						.addComponent(textAreaDescriptionDelete, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE))
-					.addGap(10)
-					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-						.addComponent(label_4)
-						.addComponent(startDateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(populateDeleteDetails, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addGap(28)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textAreaDescriptionDelete, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_5))
 					.addGap(18)
-					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-						.addComponent(label_3)
-						.addComponent(endateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(startDateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_4))
 					.addGap(18)
-					.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(endateDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label_3))
+					.addGap(18)
+					.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_2)
 						.addComponent(budgetAmountDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(currencyDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(63)
+					.addPreferredGap(ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
 					.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCloseEntry)
 						.addComponent(btnReset)
 						.addComponent(btnCancel))
-					.addContainerGap(139, Short.MAX_VALUE))
+					.addGap(26))
 		);
 		panelCloseEntry.setLayout(jPanel3Layout);
 
@@ -815,35 +769,40 @@ public class ProjectEntry extends javax.swing.JFrame {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		layout.setHorizontalGroup(
-				layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
-								.createParallelGroup(Alignment.LEADING).addGroup(layout
-										.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.TRAILING)
-												.addGroup(layout.createSequentialGroup()
-														.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(jLabel6).addGap(0))
-												.addGroup(layout
-														.createSequentialGroup().addComponent(labelCompanyCopyrights)
-														.addPreferredGap(ComponentPlacement.UNRELATED)))
-										.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-								.addComponent(jLabel1)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.LEADING)
-						.addGroup(layout
-								.createSequentialGroup()
-								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-										.addGroup(layout.createSequentialGroup().addGap(152).addComponent(filler1,
-												GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
-										.addGroup(layout.createSequentialGroup().addGap(180).addComponent(jLabel6)))
-								.addGap(23))
-						.addGroup(layout.createSequentialGroup().addGap(10).addComponent(jLabel1)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE, 574, GroupLayout.PREFERRED_SIZE)
-								.addGap(18).addComponent(labelCompanyCopyrights).addGap(72)))
-						.addGap(29)));
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jLabel1)
+						.addGroup(layout.createSequentialGroup()
+							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(labelCompanyCopyrights)
+								.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(jLabel6)
+							.addGap(0)
+							.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		layout.setVerticalGroup(
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+							.addGap(10)
+							.addComponent(jLabel1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(projectEntry, GroupLayout.PREFERRED_SIZE, 702, GroupLayout.PREFERRED_SIZE))
+						.addGroup(layout.createSequentialGroup()
+							.addGap(152)
+							.addComponent(filler1, GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
+						.addGroup(layout.createSequentialGroup()
+							.addGap(180)
+							.addComponent(jLabel6)))
+					.addGap(18)
+					.addComponent(labelCompanyCopyrights)
+					.addGap(27))
+		);
 		getContentPane().setLayout(layout);
 
 		pack();
